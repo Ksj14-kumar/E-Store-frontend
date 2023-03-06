@@ -3,10 +3,11 @@ import React from 'react';
 type propType = {
     item: ItemType,
     addItems: (item: ItemType) => void,
-    removeItemFromCart: (id: Pick<ItemType, "id"> & { status: number }) => void
+    removeItemFromCart: (id: Pick<ItemType, "id"> & { status: number }) => void,
+    itemDeleteLoader:{id:number,active:boolean}
 }
 
-function ItemList({ item, addItems, removeItemFromCart }: propType) {
+function ItemList({ item, addItems,itemDeleteLoader, removeItemFromCart }: propType) {
     return (
         <div className="items_details p-3 py-2">
             <div className="item_1 flex mobile:flex-col large:flex-col bg-[#eeececcc] rounded-md">
@@ -26,9 +27,7 @@ function ItemList({ item, addItems, removeItemFromCart }: propType) {
                     <div className="delete_item py-3 pl-[2rem]  border-b-[1px] border-x-0 border-[#bab2b2]  border-solid border-t-none">
                         <button className='text-[1rem]   btn btn-sm px-4 bg-[#f40404c3] rounded-md border-none'
                             onClick={() => {
-                                // addItems(item)
                                 removeItemFromCart({ id: item.id,status:2 })
-                                // dispatchItem(removeItem({ id: item.id }))
                             }}
                         >Remove</button>
                     </div>
@@ -38,22 +37,18 @@ function ItemList({ item, addItems, removeItemFromCart }: propType) {
                             role="button"
                             className='text-[1.2rem] rounded-r-none btn btn-sm px-4 bg-[#e4980b] rounded-md border-none'
                             onClick={() => {
-                                // dispatchItem(addItem(item))
                                 addItems(item)
                             }}
                         >+</button>
                         <p className='text-[#0d0d0d] bg-[#fff] flex justify-center items-center px-[20px]'>{item.count}</p>
-                        {/* <input type="text" className='outline-none  w-[3rem] text-center'
-                            // defaultValue={item.count}
-                            value={item.count}
-                            name="" id="" /> */}
                         <button
                             role="button"
                             type='button'
+                            disabled={itemDeleteLoader.id===item.id && itemDeleteLoader.active}
                             className='text-[1.2rem] rounded-l-none px-4 btn btn-sm bg-[#4dea04] rounded-md border-none'
                             onClick={() => {
                                 removeItemFromCart({ id: item.id,status:1 })
-                                // dispatchItem(decreaseItemCount({ id: item.id }))
+                                
                             }}
                         >-</button>
                     </div>

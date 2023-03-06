@@ -1,18 +1,19 @@
-import axios from 'axios';
-import React from 'react'
 import { toast } from 'react-hot-toast';
 import Loader, { OvalLoader } from '../../loader/Loader';
 import { useOnGivePaymentMutation } from '../../slice/api/UserinfoAPI';
+import { isAuthenticate, useAppSelector } from '../../store';
 import { isErrorWithMessage, isFetchBaseQueryError } from '../../types/types';
 
 
 function Payment() {
-    const userId: string = "64005495b07cfce7f0cb4ad3"
+    const isAuth = useAppSelector(isAuthenticate)
     const [onGivePay, { isLoading }] = useOnGivePaymentMutation()
     async function onPayPrice() {
         try {
-            const res = await onGivePay({ userId }).unwrap()
-            window.location.href = res
+            if (isAuth.isHaveId) {
+                const res = await onGivePay({ userId: isAuth.isHaveId }).unwrap()
+                window.location.href = res
+            }
         } catch (err) {
             if (isFetchBaseQueryError(err)) {
                 if (err.data) {

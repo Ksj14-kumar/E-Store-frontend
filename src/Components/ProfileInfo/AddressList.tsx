@@ -28,7 +28,7 @@ function AddressList({
             >
                 <IoMdTrash className='text-[1.4rem] text-[#d20606]' />
             </div>
-            <div className="three_dots absolute right-[4rem] top-1 rounded-full  hover:bg-[#d6cfcfaf] cursor-pointer transition-opacity px-1 mobile:hidden">
+            <div className="three_dots absolute right-[4rem] top-1 rounded-full  hover:bg-[#d6cfcfaf] cursor-pointer transition-opacity px-1 mobile:hidden wide:hidden">
                 <div className="form-control">
                     <label className="cursor-pointer label">
                         <input type="checkbox"

@@ -199,3 +199,15 @@ export interface initial_register_reducer_type {
         setResendButtonMessage: string
     }
 }
+
+
+
+export type login_reducer_actionType = {
+    type: "email" | "password",
+    payload: string
+}
+
+export type login_Reducer_initial_type = {
+    email: string,
+    password: string
+}

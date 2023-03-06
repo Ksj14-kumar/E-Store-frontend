@@ -11,9 +11,10 @@ type propType = {
     error: FetchBaseQueryError | SerializedError | undefined,
     isError: boolean,
     data: ItemType[] ,
-    setShowLoginModal:React.Dispatch<React.SetStateAction<boolean>>
+    setShowLoginModal:React.Dispatch<React.SetStateAction<boolean>>,
+    isAuthenticateUser:boolean
 }
-function HomePage({ error,setShowLoginModal, isLoading, data, isSuccess, isError }: propType) {
+function HomePage({ error,setShowLoginModal, isLoading, data, isSuccess, isError ,isAuthenticateUser}: propType) {
     return (
         <>
             {
@@ -22,7 +23,7 @@ function HomePage({ error,setShowLoginModal, isLoading, data, isSuccess, isError
                         <Error error={error} />
                     </>
                 ) :
-                    <MainContainer setShowLoginModal={setShowLoginModal} isLoading={isLoading} itemsList={data} isSuccess={isSuccess} />
+                    <MainContainer  isAuthenticateUser={isAuthenticateUser} setShowLoginModal={setShowLoginModal} isLoading={isLoading} itemsList={data} isSuccess={isSuccess} />
             }
         </>
     )

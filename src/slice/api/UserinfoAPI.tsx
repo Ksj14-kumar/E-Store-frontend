@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { allAddressType, nameAndLnameUpdatetype, registerUserInfoType, setActiveAddressType, userAddressesType } from "../../types/types"
+import { allAddressType, login_Reducer_initial_type, nameAndLnameUpdatetype, registerUserInfoType, setActiveAddressType, userAddressesType } from "../../types/types"
 export const UserDetaisAPI = createApi({
     reducerPath: "information",
-    baseQuery: fetchBaseQuery({ baseUrl: process.env.BACKEND_URL }),
+    baseQuery: fetchBaseQuery({ baseUrl: process.env.BACKEND_URL,credentials:"include" }),
     endpoints: (build) => ({
         userRegister: build.mutation<{ message: string, userId?: string }, registerUserInfoType>({
             query(info) {
@@ -12,6 +12,29 @@ export const UserDetaisAPI = createApi({
                     body: info,
                     responseHandler(response) {
                         return  response.json()
+                    },
+                }
+            }
+        }),
+        userLogin: build.mutation<string, login_Reducer_initial_type>({
+            query(info) {
+                return {
+                    url: "/api/v1/user/login",
+                    method: "POST",
+                    body: info,
+                    responseHandler(response) {
+                        return response.text()
+                    },
+                }
+            }
+        }),
+        userOnLogout:build.mutation({
+            query(){
+                return {
+                    url:"/api/v1/user/logout",
+                    method:"POST",
+                    responseHandler(response) {
+                        return response.text()
                     },
                 }
             }
@@ -129,4 +152,4 @@ export const UserDetaisAPI = createApi({
         })
     }),
 })
-export const { useUpdateNameAndLastNameMutation, useGetOTPBYEmailMutation, useEmailOTPVerifyMutation, useAddNewAddressMutation, useGetAllAddressMutation, useSetActiveAddressMutation, useDeleteAddressMutation, useOnGivePaymentMutation, useGetUserNameMutation, useUserRegisterMutation } = UserDetaisAPI
+export const { useUpdateNameAndLastNameMutation, useGetOTPBYEmailMutation, useEmailOTPVerifyMutation, useAddNewAddressMutation, useGetAllAddressMutation, useSetActiveAddressMutation, useDeleteAddressMutation, useOnGivePaymentMutation, useGetUserNameMutation, useUserRegisterMutation,useUserLoginMutation,useUserOnLogoutMutation } = UserDetaisAPI

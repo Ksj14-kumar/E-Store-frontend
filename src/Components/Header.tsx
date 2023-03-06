@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { GrSearch } from "react-icons/gr"
 import { ItemType, rigthSidebarList } from '../types/types';
 import { useNavigate } from "react-router-dom"
 import { FaUserAlt } from "react-icons/fa"
@@ -13,7 +12,6 @@ import Profile_icons from './Header/Profile_icons';
 import CartIcons from './Header/CartIcons';
 import { isAuthenticate, useAppDispatch, useAppSelector } from '../store';
 import { showAllProducts } from '../slice/ItemSlice/Items';
-const url = "https://cdn.pixabay.com/photo/2016/03/23/04/01/woman-1274056__340.jpg"
 const rightSideBarList = [
     {
         id: 1,
@@ -38,19 +36,24 @@ const rightSideBarList = [
 
 type propType = {
     setItemList: React.Dispatch<React.SetStateAction<ItemType[]>>,
-    itemList: ItemType[]
+    itemList: ItemType[],
+    isAuthenticateUser: boolean,
+    profileImageURL: string,
+    setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-function Header({ setItemList, itemList }: propType) {
+function Header({ setItemList, itemList, isAuthenticateUser, profileImageURL, setShowLoginModal }: propType) {
     const [showRightSideBar, setShowRightSideBar] = useState<boolean>(false)
     const [Query, setQuery] = useState<string>("")
-    const dispatchItems= useAppDispatch()
-    const isAuth= useAppSelector(isAuthenticate)
+    const dispatchItems = useAppDispatch()
+    const isAuth = useAppSelector(isAuthenticate)
     const [showFocus, setShowFocus] = useState<boolean>(false)
     const { data, isLoading } = useFilterItemsQuery(Query)
     const navigate = useNavigate()
+
     useEffect(() => {
         dispatchItems(showAllProducts(data))
     }, [data])
+
     function onInputSearchHandler(e: React.ChangeEvent<HTMLInputElement>) {
         setQuery(e.target.value.toLowerCase())
     }
@@ -88,9 +91,18 @@ function Header({ setItemList, itemList }: propType) {
             </div>
             {/* =====================================CART Icons================================= */}
             <div className="right flex justify-evenly flex-[3]">
-               <CartIcons />
+                <CartIcons isAuthenticateUser={isAuthenticateUser} />
                 {/* ==================================Profile Icons======================== */}
-                {isAuth&&<Profile_icons url={url} showRightSideBar={showRightSideBar} setShowRightSideBar={setShowRightSideBar}/>}
+                {
+                    (isAuthenticateUser && isAuth.image) ? <Profile_icons url={profileImageURL} showRightSideBar={showRightSideBar} setShowRightSideBar={setShowRightSideBar} /> :
+                        <div className="wrapper_login bg-[#d6d1d1ce]  rounded-md px-[.4rem] my-[2px] flex justify-center items-center">
+                            <button
+                                onClick={() => {
+                                    setShowLoginModal(true)
+                                }}
+                                className='btn bg-[#e8e3e3] text-black hover:text-[#fff] border-none btn-sm'>login</button>
+                        </div>
+                }
 
                 <AnimatePresence>
                     {showRightSideBar && <motion.div

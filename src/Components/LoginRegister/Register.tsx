@@ -1,11 +1,9 @@
-import { userInfo } from 'os'
 import React, { useReducer, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import { Register_Reducer_Handler } from '../../HookReducerHandler'
 import Loader from '../../loader/Loader'
 import { useEmailOTPVerifyMutation, useUserRegisterMutation } from '../../slice/api/UserinfoAPI'
-import { initial_register_reducer_type, isErrorWithMessage, isFetchBaseQueryError, registerUserInfoType } from '../../types/types'
+import { isErrorWithMessage, isFetchBaseQueryError, registerUserInfoType } from '../../types/types'
 import Side_Login from './Side_Login'
 type registerInputType = {
     id: number,
@@ -36,48 +34,22 @@ const registerInput: registerInputType[] = [
 ]
 
 
-
-const initialState:initial_register_reducer_type={
-    register: {
-        id: 1,
-        registerDetails: { name: "", lname: "", email: "", password: "" }
-    },
-    otpBox: {
-        id: 2,
-        setOTPBox: false
-
-    },
-
-    inputOTP: {
-        id: 3,
-        setInputOTP: ""
-    },
-    verifyLoader: {
-        id: 4,
-        setIsVerifyLoader: false
-    },
-    resendMessage: {
-        id: 5,
-        setResendButtonMessage: ""
-    }
+type propType = {
+    setShowModal: React.Dispatch<React.SetStateAction<{
+        islogin: boolean;
+        isRegister: boolean;
+    }>>
 }
 
-
-
-function Register() {
+function Register({ setShowModal }: propType) {
     const [RegisterUser, { isLoading, isSuccess, isError }] = useUserRegisterMutation()
     const [emailVerifyOTP, { }] = useEmailOTPVerifyMutation()
-
-    // const [initial, dispatch] = useReducer(Register_Reducer_Handler,initialState)
-    // console.log({initial})
-
     const [registerDetails, setRegisterdetails] = useState<registerUserInfoType>({ name: "", lname: "", email: "", password: "" } as registerUserInfoType)
     const [otpBox, setOTPBox] = useState<boolean>(false)
     const [inputOTP, setInputOTP] = useState<string>("")
     const [verifyLoader, setIsVerifyLoader] = useState<boolean>(false)
     const [resendMessage, setResendButtonMessage] = useState<string>("")
     const navigate = useNavigate()
-
     // ================================================Input Hander=========================
     let name;
     async function onInputHandler(e: React.ChangeEvent<HTMLInputElement>) {
@@ -128,7 +100,13 @@ function Register() {
                     toast.success(res, { duration: 2000, position: "bottom-center" })
                     setOTPBox(false)
                     localStorage.removeItem("tempId")
-                    navigate("/login")
+                    setShowModal({ islogin: true, isRegister: false })
+                    setRegisterdetails({
+                        name: "",
+                        lname: "",
+                        email: "",
+                        password: ""
+                    })
                 }
             } catch (err) {
                 setIsVerifyLoader(false)
@@ -174,6 +152,8 @@ function Register() {
                         })
                     }
                 </div>
+
+                {/* ==========================================OTP Box======================== */}
                 {otpBox && <div className="input_fields  py-2   w-full flex justify-start pl-[4.2rem]">
                     <input type="text" placeholder="OTP" className="input  input-sm  input-bordered input-info w-[5rem] text-center flex justify-center items-center  "
                         minLength={4}
@@ -191,6 +171,7 @@ function Register() {
                     </div>
                 </div>}
             </div>
+            {/* =========================================Submit button=============================== */}
             <div className="btn_section">
                 <div className="btnFsd py-2 px-7">
                     <button className='btn btn-block btn-sm

@@ -5,32 +5,35 @@ import { addItem } from '../slice/ItemSlice/Items'
 import { AxiosError } from "axios"
 import { useAddProductMutation } from '../slice/api/CartAPI'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 type propType = {
     item: ItemType,
-    setShowLoginModal:React.Dispatch<React.SetStateAction<boolean>>
+    setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>,
+    isAuthenticateUser: boolean
 }
-function Items({ item,setShowLoginModal }: propType) {
-    const userId:string="64005495b07cfce7f0cb4ad3"
+function Items({ item, setShowLoginModal, isAuthenticateUser }: propType) {
     const dispatchItem = useAppDispatch()
-    const isAuth= useAppSelector(isAuthenticate)
+    const navigate= useNavigate()
+    const userInfoFromRedux = useAppSelector(isAuthenticate)
     const [addnewItem, { isLoading, isError, isSuccess, error }] = useAddProductMutation()
-    // TODO:remove userId
     async function dispatchItemToStore(item: ItemType) {
         try {
-            dispatchItem(addItem(item))
-            await addnewItem({
-                item,
-                userId,
-            }).unwrap()
+            if (userInfoFromRedux.isHaveId) {
+                await addnewItem({
+                    item,
+                    userId: userInfoFromRedux.isHaveId,
+                }).unwrap()
+                dispatchItem(addItem(item))
+            }
         } catch (err: unknown) {
-            // TODO:ERRor handle in rtk query
             const error = err as AxiosError
             console.log(error)
         }
     }
     return (
         <div data-aos="fade-up" data-aos-duration={1500} data-aos-mirror="true" className="card w-64 mobile:w-full bg-base-100 shadow-xl px-2 pb-2">
-            <figure className='py-2'><img className='rounded-md w-full' src={item.image} alt="Shoes" /></figure>
+            <figure className='py-2'>
+                <img crossOrigin="anonymous" className='rounded-md w-full' src={item.image} alt="Shoes" /></figure>
             <div className="card-body bg-[#f4f0f0] rounded-md flex justify-center">
                 <h2 className="card-title text-center text-[.9rem]">{item.title}</h2>
                 <div className="rating select-none flex justify-between px-2 py-1 items-center">
@@ -45,17 +48,28 @@ function Items({ item,setShowLoginModal }: propType) {
                 </div>
                 <div className="button_Wrapper flex justify-evenly w-full gap-x-2">
                     <button className="btn bg-[#06C4CC] border-none btn-sm"
+                        disabled={isLoading}
                         onClick={() => {
-                            if(isAuth){
+                            if (isAuthenticateUser) {
                                 dispatchItemToStore(item)
                             }
-                            else{
+                            else {
                                 setShowLoginModal(true)
                             }
-                            
+
                         }}
                     >Add to Cart</button>
-                    <button className="btn bg-[#f2c40b] border-none btn-sm">Buy Now</button>
+                    <button className="btn bg-[#f2c40b] border-none btn-sm"
+                        onClick={() => {
+                            if (isAuthenticateUser) {
+                                dispatchItemToStore(item)
+                                navigate("/place/order")
+                            }
+                            else {
+                                setShowLoginModal(true)
+                            }
+                        }}
+                    >Buy Now</button>
                 </div>
             </div>
         </div>

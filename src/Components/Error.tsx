@@ -5,7 +5,6 @@ type propType = {
     error: FetchBaseQueryError | SerializedError | undefined
 }
 function Error({ error }: propType): JSX.Element {
-    console.log(error)
     if (error) {
         if ('status' in error) {
             const errMsg = 'error' in error ? error.error : JSON.stringify(error.data)

@@ -3,16 +3,19 @@ import OrderItems from '../Components/Orders/OrderItems'
 import { useGetOrdersMutation } from '../slice/api/CartAPI'
 import { orderItemType } from '../types/types'
 import React from 'react'
+import { isAuthenticate, useAppSelector } from '../store'
 function Order() {
-    const userId: string = "64005495b07cfce7f0cb4ad3"
+    const isAuth = useAppSelector(isAuthenticate)
     const [getOrders, { isLoading, isSuccess }] = useGetOrdersMutation()
     const [orderItems, setOrderItems] = useState<orderItemType[]>([])
     const getOrderlist = useMemo(() => {
         (async function () {
             try {
-                const res: orderItemType[] | string = await getOrders({ userId }).unwrap()
-                if (typeof res !== "string") {
-                    setOrderItems(res)
+                if (isAuth.isHaveId) {
+                    const res: orderItemType[] | string = await getOrders({ userId: isAuth.isHaveId }).unwrap()
+                    if (typeof res !== "string") {
+                        setOrderItems(res)
+                    }
                 }
             } catch (err) {
 
@@ -30,9 +33,12 @@ function Order() {
             </header>
             <div className="mt-2 mobile:w-full wide:w-full">
                 {
-                    orderItems.map((item:orderItemType, index:number) => {
-                        return <OrderItems key={index} item={item}/>
-                    })
+                    orderItems.length > 0 ? orderItems.map((item: orderItemType, index: number) => {
+                        return <OrderItems key={index} item={item} />
+                    }) :
+                        <div className="not_found mt-[3rem] flex justify-center">
+                            <p className='text-[1.3rem] font-serif tracking-wider'>no order found</p>
+                        </div>
                 }
             </div>
         </div>

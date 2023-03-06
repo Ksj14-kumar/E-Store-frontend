@@ -6,7 +6,11 @@ export const apiSlice = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: process.env.BACKEND_URL }),
     endpoints: (builder) => ({
         getProducts: builder.query<ItemType[], "">({
-            query: () => `/api/v1/item/products`,
+            query: () => {
+                return {
+                    url:`/api/v1/item/products`,
+                }
+            },
         }),
         filterItems: builder.query({
             query(q) {
@@ -21,7 +25,8 @@ export const apiSlice = createApi({
                 return {
                     url: `/api/v1/item/all/${userId.userId}`,
                     method: "POST",
-                    body: userId
+                    body: userId,
+                    credentials:"include"
                 }
             }
         })

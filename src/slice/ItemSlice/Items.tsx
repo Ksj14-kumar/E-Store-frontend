@@ -1,19 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, PayloadActionCreator } from "@reduxjs/toolkit"
 import { itemAddType, ItemType } from "../../types/types"
 import { getCartItemFromDBType } from "../../types/types"
-import { register } from "./util"
-// const addItemIntoCart=
-
-const regi = createAsyncThunk("", async () => {
-    try {
-
-        const res = register()
-        console.log({ res })
-    } catch (err) {
-        console.log(err)
-        return
-    }
-})
 
 type initialType = {
     items: ItemType[],
@@ -28,12 +15,20 @@ const initialState: initialType = {
 }
 type productsType = {
     products: ItemType[],
-    isAuth: boolean
+    isAuth: {
+        isHaveId: string | null,
+        image: string | null,
+        auth: boolean | null
+    }
 }
+const isauth = localStorage.getItem("isauth")
 const productsItems: productsType = {
     products: [],
-    // isAuth: Boolean(localStorage.getItem("userId"))
-    isAuth: false
+    isAuth: {
+        isHaveId: localStorage.getItem("userId"),
+        image: localStorage.getItem("url"),
+        auth: isauth ? JSON.parse(isauth) : null
+    }
 }
 
 const ItemSlice = createSlice({
@@ -125,22 +120,25 @@ const productItems = createSlice({
         showAllProducts: (state, action: PayloadAction<ItemType[]>) => {
             state.products = action.payload
         },
-        setIsAuth: (state, action: PayloadAction<boolean>) => {
-            state.isAuth = action.payload
+        setIsAuth: (state, action: PayloadAction<{ id: string, image: string, isauth: boolean }>) => {
+            localStorage.setItem("userId", action.payload.id)
+            localStorage.setItem("url", action.payload.image)
+            localStorage.setItem("isauth", JSON.stringify(action.payload.isauth))
+            state.isAuth = {
+                isHaveId: action.payload.id,
+                image: action.payload.image,
+                auth: action.payload.isauth
+
+            }
         }
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(regi.fulfilled, (state, action) => {
 
-            })
-    }
 })
 
 
 
 export const { addItem, decreaseItemCount, removeItem, loadAllItemsIntoCart } = ItemSlice.actions
-export const { showAllProducts } = productItems.actions
+export const { showAllProducts, setIsAuth } = productItems.actions
 export const productsItemReducer = productItems.reducer
 const ItemReducer = ItemSlice.reducer
 export default ItemReducer

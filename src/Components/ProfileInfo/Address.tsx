@@ -6,6 +6,7 @@ import { useAddNewAddressMutation, useDeleteAddressMutation, useGetAllAddressMut
 import Loader from '../../loader/Loader'
 import AddressList from './AddressList'
 import { Socket } from 'socket.io-client'
+import { isAuthenticate, useAppSelector } from '../../store'
 const gridTemplate: addressType[] = [
     {
         id: 1,
@@ -46,8 +47,7 @@ export interface currentAddressType {
     userId: string,
 }
 function Address({ sidebar, socket }: propType) {
-    // TODO: hide userID
-    const userId = "64005495b07cfce7f0cb4ad3"
+    const isAuth = useAppSelector(isAuthenticate)
     const [newAddressComponent, setNewAddressComponent] = useState<boolean>(false)
     const [loader, setloader] = useState<boolean>(false)
     const [currentAddress, setCurrentAddress] = useState<currentAddressType>({ id: "", userId: "" })
@@ -83,10 +83,12 @@ function Address({ sidebar, socket }: propType) {
     const laodAllAddressFromDB = useMemo(() => {
         (async function load() {
             try {
-                const res: allAddressType[] = await laodAllAddress({ userId }).unwrap()
-                setListOfAllAddress(res)
+                if (isAuth.isHaveId) {
+                    const res: allAddressType[] = await laodAllAddress({ userId: isAuth.isHaveId }).unwrap()
+                    setListOfAllAddress(res)
+                }
             } catch (err) {
-                console.log(err)
+                console.warn(err)
             }
         })()
     }, [])
@@ -98,13 +100,25 @@ function Address({ sidebar, socket }: propType) {
         if (onSubmit && addressDeatils.mobile.length === 12) {
             try {
 
-                if (socket.connected) {
-                    socket.emit("newAddress", { ...addressDeatils, userId })
-                }
-                else {
-                    setloader(true)
-                    const res = await addAddress({ ...addressDeatils, userId }).unwrap()
-                    toast.success(res, { duration: 2000, position: "bottom-center" })
+                if (isAuth.isHaveId) {
+
+                    if (socket.connected) {
+                        socket.emit("newAddress", { ...addressDeatils, userId:isAuth.isHaveId })
+                    }
+                    else {
+                        setloader(true)
+                        const res = await addAddress({ ...addressDeatils, userId:isAuth.isHaveId }).unwrap()
+                        toast.success(res, { duration: 2000, position: "bottom-center" })
+                        setAddressDeatils({
+                            name: "",
+                            state: "",
+                            pincode: "",
+                            mobile: "",
+                            locality: "",
+                            city: "",
+                            address: ""
+                        })
+                    }
                     setAddressDeatils({
                         name: "",
                         state: "",
@@ -115,15 +129,6 @@ function Address({ sidebar, socket }: propType) {
                         address: ""
                     })
                 }
-                setAddressDeatils({
-                    name: "",
-                    state: "",
-                    pincode: "",
-                    mobile: "",
-                    locality: "",
-                    city: "",
-                    address: ""
-                })
             } catch (err) {
                 if (isFetchBaseQueryError(err)) {
                     toast.error(JSON.stringify(err), { duration: 2000, position: "bottom-center" })
@@ -134,7 +139,6 @@ function Address({ sidebar, socket }: propType) {
                     return
                 }
                 setloader(false)
-                console.log(err)
             }
             finally {
                 setloader(false)
@@ -156,7 +160,6 @@ function Address({ sidebar, socket }: propType) {
             const removeAddress = listOfAddress.filter((item) => item._id !== params.addressId)
             setListOfAllAddress(removeAddress)
             const res = await deleteAddressByAPI({ userId: params.userId, addressId: params.addressId }).unwrap()
-            console.log({ res })
         } catch (err) {
             console.warn(err)
         }

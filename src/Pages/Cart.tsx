@@ -4,24 +4,27 @@ import FinalPrice from '../Components/RightSideBar/FinalPrice';
 import ItemList from '../Components/ItemList';
 import { useAddProductMutation, useDeleteItemMutation } from '../slice/api/CartAPI';
 import { addItem, decreaseItemCount, removeItem } from '../slice/ItemSlice/Items';
-import { ItemListInCart, useAppDispatch, useAppSelector } from '../store';
+import { isAuthenticate, ItemListInCart, useAppDispatch, useAppSelector } from '../store';
 import { CartItemStatusType, ItemType } from '../types/types';
-import React from 'react'
+import React, { useState } from 'react'
 type propType = {
     sidebar: boolean,
     finalTotalAmount: boolean
 }
 function Cart({ sidebar, finalTotalAmount }: propType) {
-    const userId:string="64005495b07cfce7f0cb4ad3"
+    const isAuth= useAppSelector(isAuthenticate)
     const { totalAmout, totalItem, itemsList } = useAppSelector(ItemListInCart)
+    const [itemDeleteLoader,setItemDeleteLoader]= useState<{id:number,active:boolean}>({id:-12,active:false})
     const dispatchItem = useAppDispatch()
     const [addProduct, { isLoading, isSuccess, error, isError }] = useAddProductMutation()
     const [popItem, { }] = useDeleteItemMutation()
-    //TODO: Handle userId
+
     const addItemsInCart = async (item: ItemType): Promise<void> => {
         try {
-            dispatchItem(addItem(item))
-            await addProduct({ item: item, userId }).unwrap()
+            if(isAuth.isHaveId){
+                dispatchItem(addItem(item))
+                await addProduct({ item: item, userId:isAuth.isHaveId }).unwrap()
+            }
         } catch (err) {
             // TODO:Handle error
             const error = err as AxiosError
@@ -30,22 +33,26 @@ function Cart({ sidebar, finalTotalAmount }: propType) {
     }
     const removeItemFromCart = async (itemId: Pick<ItemType, "id"> & { status: number }) => {
         try {
-            if (itemId) {
+            if (itemId && isAuth.isHaveId) {
                 if (itemId.status === 1) {
-                    dispatchItem(decreaseItemCount({ id: itemId.id }))
+                    setItemDeleteLoader({id:itemId.id,active:true})
                     await popItem({
-                        userId,
+                        userId:isAuth.isHaveId,
                         status: 1,
                         params: itemId.id
                     }).unwrap()
+                    dispatchItem(decreaseItemCount({ id: itemId.id }))
+                    setItemDeleteLoader({id:itemId.id,active:false})
                 }
                 else {
-                    dispatchItem(removeItem({ id: itemId.id }))
+                    setItemDeleteLoader({id:itemId.id,active:true})
                     await popItem({
-                        userId,
+                        userId:isAuth.isHaveId,
                         status: 2,
                         params: itemId.id
                     }).unwrap()
+                    dispatchItem(removeItem({ id: itemId.id }))
+                    setItemDeleteLoader({id:itemId.id,active:false})
                 }
             }
         } catch (err) {
@@ -77,7 +84,7 @@ function Cart({ sidebar, finalTotalAmount }: propType) {
                 <div className='pt-[3.7rem]  flex mobile:flex-col mobile:px-0 justify-center px-4 gap-x-2 bg-[#c1cee7] relative mobile:pb-[1rem] rounded-md'>
                     {!finalTotalAmount && <div className="left_side bg-[#d4d0d0] rounded-md flex-[7]">
                         {itemsList.map((item: ItemType, index: number) => {
-                            return <ItemList removeItemFromCart={removeItemFromCart} addItems={addItemsInCart} key={index} item={item} />
+                            return <ItemList itemDeleteLoader={itemDeleteLoader} removeItemFromCart={removeItemFromCart} addItems={addItemsInCart} key={index} item={item} />
                         })}
                     </div>}
                     {sidebar &&

@@ -3,6 +3,7 @@ import { useEmailOTPVerifyMutation, useGetOTPBYEmailMutation, useUpdateNameAndLa
 import { isErrorWithMessage, isFetchBaseQueryError, nameInfoType } from '../../types/types'
 import { toast } from "react-hot-toast"
 import Loader from '../../loader/Loader'
+import { isAuthenticate, useAppSelector } from '../../store'
 
 function isValidEmail(email: string): boolean {
     return /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(email)
@@ -10,6 +11,7 @@ function isValidEmail(email: string): boolean {
 function Info() {
     // TODO:Remove userID
     const userId = "64005495b07cfce7f0cb4ad3"
+    const isAuth = useAppSelector(isAuthenticate)
     const [nameInfo, setNameInfo] = useState<nameInfoType>({ name: "", lname: "" } as nameInfoType)
     const [email, setEmail] = useState<string>("")
     const [mobile, setMobile] = useState<string>("")
@@ -61,10 +63,12 @@ function Info() {
         const onSubmit = Boolean(nameInfo.name) && Boolean(nameInfo.lname)
         if (onSubmit) {
             try {
-                setLoader(true)
-                await updateUserInfo({ status: 3, userId: userId, name: nameInfo.name, lname: nameInfo.lname }).unwrap()
-                toast.success("update Successfull", { duration: 2000, position: "bottom-center" })
-                setNameInfo({ name: "", lname: "" })
+                if (isAuth.isHaveId) {
+                    setLoader(true)
+                    await updateUserInfo({ status: 3, userId: isAuth.isHaveId, name: nameInfo.name, lname: nameInfo.lname }).unwrap()
+                    toast.success("update Successfull", { duration: 2000, position: "bottom-center" })
+                    setNameInfo({ name: "", lname: "" })
+                }
             } catch (err) {
                 // TODO:Handle error
                 console.warn(err)
@@ -79,10 +83,12 @@ function Info() {
         const onSubmit = Boolean(gender)
         if (onSubmit) {
             try {
-                setGenderLoader(true)
-                await updateUserInfo({ userId: userId, gender, status: 4 })
-                toast.success("update success", { duration: 2000, position: "bottom-center" })
-                setGender("")
+                if (isAuth.isHaveId) {
+                    setGenderLoader(true)
+                    await updateUserInfo({ userId: isAuth.isHaveId, gender, status: 4 })
+                    toast.success("update success", { duration: 2000, position: "bottom-center" })
+                    setGender("")
+                }
             } catch (err) {
                 // TODO: Handle error
                 console.warn(err)
@@ -130,12 +136,15 @@ function Info() {
         }
         if (Boolean(getEmailOTP) && (getEmailOTP.length === 4)) {
             try {
-                setEmailOTPVerificationLoader(true)
-                const res = await EmailOTPVerify({ otp: getEmailOTP, userId, email }).unwrap()
-                toast.success(res, { duration: 2000, position: "bottom-center" })
-                setEmail("")
-                setEmailOTP("")
-                setShowOtpEmailBox(false)
+                if (isAuth.isHaveId) {
+
+                    setEmailOTPVerificationLoader(true)
+                    const res = await EmailOTPVerify({ otp: getEmailOTP, userId:isAuth.isHaveId, email }).unwrap()
+                    toast.success(res, { duration: 2000, position: "bottom-center" })
+                    setEmail("")
+                    setEmailOTP("")
+                    setShowOtpEmailBox(false)
+                }
             } catch (err) {
                 if (isFetchBaseQueryError(err)) {
                     const msg = JSON.parse(JSON.stringify(err.data))

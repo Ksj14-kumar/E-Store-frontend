@@ -5,9 +5,10 @@ type propType = {
     itemsList: ItemType[],
     isLoading: boolean,
     isSuccess: boolean,
-    setShowLoginModal:React.Dispatch<React.SetStateAction<boolean>>
+    setShowLoginModal:React.Dispatch<React.SetStateAction<boolean>>,
+    isAuthenticateUser:boolean
 }
-function MainContainer({ isLoading,setShowLoginModal, itemsList, isSuccess }: propType) {
+function MainContainer({ isLoading,setShowLoginModal, itemsList, isSuccess,isAuthenticateUser }: propType) {
 
     if (isLoading) {
         return (
@@ -20,7 +21,7 @@ function MainContainer({ isLoading,setShowLoginModal, itemsList, isSuccess }: pr
         <div className='pt-[3rem] bg-[#eaeaee]'>
             {isSuccess && <main className="items_home py-2 px-1 flex flex-wrap mobile:justify-center  gap-x-1 gap-y-2 bg-[#d3cfcf99] justify-center h-full">
                 {itemsList !== undefined && itemsList.map((item: ItemType, index: number) => {
-                    return <Items item={item} key={index} setShowLoginModal={setShowLoginModal}/>
+                    return <Items isAuthenticateUser={isAuthenticateUser} item={item} key={index} setShowLoginModal={setShowLoginModal}/>
                 })}
             </main>}
 

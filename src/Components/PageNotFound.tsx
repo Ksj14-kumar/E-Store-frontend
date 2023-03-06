@@ -8,7 +8,7 @@ function PageNotFound() {
             async function () {
                 try {
                     setLoader(true)
-                    const res = await axios.get(process.env.BACKEND_URL + "/api/v1/static/404", {
+                    const res = await axios.get("/api/v1/static/404", {
                         responseType: "blob"
                     })
                     const url = window.URL.createObjectURL(new Blob([res.data]))

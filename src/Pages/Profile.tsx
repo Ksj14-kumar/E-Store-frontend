@@ -5,6 +5,7 @@ import Info from "../Components/ProfileInfo/Info"
 import { profileType } from "../types/types"
 import React from 'react';
 import { useGetUserNameMutation } from "../slice/api/UserinfoAPI"
+import { isAuthenticate, useAppSelector } from "../store"
 type stateType = {
     profile: boolean,
     add: boolean,
@@ -23,11 +24,11 @@ const links: profileType[] = [
 ]
 
 type propsType = {
-    socket: Socket
+    socket: Socket,
+    profileImageURL:string
 }
-function Profile({ socket }: propsType) {
-    // TODO:Hide user ID
-    const userId: string = "64005495b07cfce7f0cb4ad3"
+function Profile({ socket,profileImageURL }: propsType) {
+    const isAuth= useAppSelector(isAuthenticate)
     const [showComponent, setShowComponent] = useState<stateType>({ profile: true, add: false, id: 1 } as stateType)
     const [getUserInfo, { isLoading, isSuccess }] = useGetUserNameMutation()
     const [info, setInfo] = useState<string>("")
@@ -36,8 +37,10 @@ function Profile({ socket }: propsType) {
     const userInfo = useMemo(() => {
         (async function () {
             try {
-                const res = await getUserInfo({ userId }).unwrap()
-                setInfo(res)
+                if(isAuth.isHaveId){
+                    const res = await getUserInfo({ userId:isAuth.isHaveId }).unwrap()
+                    setInfo(res)
+                }
             } catch (err) {
                 console.warn(err)
             }
@@ -54,7 +57,7 @@ function Profile({ socket }: propsType) {
                     <div className="wrapper py-1 px-2 flex items-center">
                         <div className="image_container flex-[3]">
                             <div className="image rounded-full w-[2.7rem] h-[2.7rem]">
-                                <img src={url} alt="" className="rounded-full w-full h-full" />
+                                <img src={profileImageURL} alt="" className="rounded-full w-full h-full" />
                             </div>
                         </div>
                         <div className="message flex-[9]">

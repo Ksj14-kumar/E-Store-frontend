@@ -2,9 +2,8 @@ import { deleteItemType, getCartItemFromDBType, itemAddType, orderItemType } fro
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 export const newApiSlice = createApi({
     reducerPath: "cart",
-    baseQuery: fetchBaseQuery({ baseUrl: process.env.BACKEND_URL }),
+    baseQuery: fetchBaseQuery({ baseUrl: process.env.BACKEND_URL,credentials:"include" }),
     endpoints: (build) => ({
-
         addProduct: build.mutation<string, itemAddType>({
             query(item) {
                 return {

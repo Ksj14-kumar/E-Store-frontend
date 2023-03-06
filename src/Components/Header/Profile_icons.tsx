@@ -13,7 +13,7 @@ function Profile_icons({ url, setShowRightSideBar, showRightSideBar }: propType)
                         setShowRightSideBar(!showRightSideBar)
                     }}
                 >
-                    <img src={url} />
+                    <img crossOrigin="anonymous" src={url} />
                 </div>
             </div>
         </div>
