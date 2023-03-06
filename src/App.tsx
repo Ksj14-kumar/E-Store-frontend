@@ -6,17 +6,18 @@ import { loadAllItemsIntoCart, setIsAuth, showAllProducts } from './slice/ItemSl
 import axios, { AxiosError } from 'axios'
 import { toast, Toaster } from 'react-hot-toast'
 import { io, Socket } from "socket.io-client"
-import { useGetCartItemsMutation, useGetProductsQuery } from './slice/api/apiSlice'
+import { useGetCartItemsMutation, useGetProductsQuery, useOnSuccessMutation } from './slice/api/apiSlice'
 const socket: Socket = io("/api/v1/nsp/address", {
   path: "/store",
   reconnection: false,
-  withCredentials:true,
+  withCredentials: true,
   transports: ["websocket"]
 })
 function App() {
   const dispatchItem = useAppDispatch()
   const isAuth = useAppSelector(isAuthenticate)
   const { data = [], isLoading, isSuccess, error, isError } = useGetProductsQuery("")
+  const [onSuccess, { }] = useOnSuccessMutation()
   const [cartItems, { }] = useGetCartItemsMutation()
   const dispatchApp = useAppDispatch()
   useEffect(() => {
@@ -37,19 +38,16 @@ function App() {
   useEffect(() => {
     (async function () {
       try {
-        const res = await axios.get("/api/v1/user/success", {
-          withCredentials: true,
-          headers: {
-            "Access-Control-Allow-Origin": "*"
+        const res = await onSuccess("").unwrap()
+        if (typeof res !== "number") {
+          if (Boolean(res)) {
+            dispatchApp(setIsAuth({
+              image: JSON.parse(JSON.stringify(res)).image
+              ,
+              isauth: true,
+              id: res._id
+            }))
           }
-        })
-        if (Boolean(res.data)) {
-          dispatchApp(setIsAuth({
-            image: JSON.parse(JSON.stringify(res.data)).image
-            ,
-            isauth: true,
-            id: res.data._id
-          }))
         }
       } catch (err: unknown) {
         console.warn(err)

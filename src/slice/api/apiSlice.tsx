@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ItemType } from '../../types/types';
-
 export const apiSlice = createApi({
     reducerPath: 'products',
     baseQuery: fetchBaseQuery({ baseUrl: process.env.BACKEND_URL }),
@@ -29,9 +28,22 @@ export const apiSlice = createApi({
                     credentials:"include"
                 }
             }
+        }),
+        onSuccess:builder.mutation<{image:string,_id:string,isAuth:boolean} | number,string>({
+            query(){
+                return {
+                    url:"/api/v1/user/success",
+                    method:"POST",
+                    credentials:"include",
+                    prepareHeaders: (headers: { set: (arg0: string, arg1: string) => void; }) => {
+                        headers.set("Access-Control-Allow-Origin", "*")
+                          return headers
+                      }
+                }
+            }
         })
     }),
 })
 
 
-export const { useGetProductsQuery, useFilterItemsQuery, useGetCartItemsMutation } = apiSlice
+export const { useGetProductsQuery, useFilterItemsQuery, useGetCartItemsMutation ,useOnSuccessMutation} = apiSlice

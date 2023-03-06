@@ -6,12 +6,12 @@ import { profileType } from "../types/types"
 import React from 'react';
 import { useGetUserNameMutation } from "../slice/api/UserinfoAPI"
 import { isAuthenticate, useAppSelector } from "../store"
+import { Oval } from "react-loader-spinner"
 type stateType = {
     profile: boolean,
     add: boolean,
     id: number
 }
-const url = "https://cdn.pixabay.com/photo/2016/03/23/04/01/woman-1274056__340.jpg"
 const links: profileType[] = [
     {
         id: 1,
@@ -64,8 +64,26 @@ function Profile({ socket, profileImageURL }: propsType) {
                                 }
                             </div>
                         </div>
-                        <div className="message flex-[9]">
-                            <p className="text-[1.2rem] truncate text-[#2c2a2a] font-serif tracking-wider">{info}</p>
+                        <div className="message flex-[9] flex justify-center">
+                            {
+                                isLoading ? (
+                                    <Oval
+                                        height={30}
+                                        width={30}
+                                        color="#E90064"
+                                        wrapperStyle={{}}
+                                        wrapperClass=""
+                                        visible={true}
+                                        ariaLabel='oval-loading'
+                                        secondaryColor="#F0EEED"
+                                        strokeWidth={2}
+                                        strokeWidthSecondary={2}
+                                    />
+                                ) : (
+                                    <p className="text-[1.2rem] truncate text-[#2c2a2a] font-serif tracking-wider">{info}</p>
+
+                                )
+                            }
                         </div>
                     </div>
                 </section>
@@ -99,11 +117,11 @@ function Profile({ socket, profileImageURL }: propsType) {
                         </ul>
                     </div>
                 </section>
-            </div>
+            </div >
             {
                 (showComponent.profile && showComponent.id === 1) ? (<Info />) : (<Address sidebar={true} socket={socket} />)
             }
-        </div>
+        </div >
     )
 }
 export default React.memo(Profile)

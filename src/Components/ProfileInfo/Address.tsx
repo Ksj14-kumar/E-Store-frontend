@@ -3,10 +3,11 @@ import { motion, AnimatePresence } from "framer-motion"
 import { addressType, allAddressType, isErrorWithMessage, isFetchBaseQueryError, setActiveAddressType, socketAddressType, userAddressesType } from '../../types/types'
 import { toast } from 'react-hot-toast'
 import { useAddNewAddressMutation, useDeleteAddressMutation, useGetAllAddressMutation, useSetActiveAddressMutation } from '../../slice/api/UserinfoAPI'
-import Loader from '../../loader/Loader'
+import Loader, { OvalLoader } from '../../loader/Loader'
 import AddressList from './AddressList'
 import { Socket } from 'socket.io-client'
 import { isAuthenticate, useAppSelector } from '../../store'
+import { Oval } from 'react-loader-spinner'
 const gridTemplate: addressType[] = [
     {
         id: 1,
@@ -52,7 +53,7 @@ function Address({ sidebar, socket }: propType) {
     const [loader, setloader] = useState<boolean>(false)
     const [currentAddress, setCurrentAddress] = useState<currentAddressType>({ id: "", userId: "" })
     const [addAddress, { }] = useAddNewAddressMutation()
-    const [laodAllAddress, { }] = useGetAllAddressMutation()
+    const [laodAllAddress, { isLoading, isError, error }] = useGetAllAddressMutation()
     const [listOfAddress, setListOfAllAddress] = useState<allAddressType[]>([])
     const [setActiveAddress, { }] = useSetActiveAddressMutation()
     const [deleteAddressByAPI, { }] = useDeleteAddressMutation()
@@ -103,11 +104,11 @@ function Address({ sidebar, socket }: propType) {
                 if (isAuth.isHaveId) {
 
                     if (socket.connected) {
-                        socket.emit("newAddress", { ...addressDeatils, userId:isAuth.isHaveId })
+                        socket.emit("newAddress", { ...addressDeatils, userId: isAuth.isHaveId })
                     }
                     else {
                         setloader(true)
-                        const res = await addAddress({ ...addressDeatils, userId:isAuth.isHaveId }).unwrap()
+                        const res = await addAddress({ ...addressDeatils, userId: isAuth.isHaveId }).unwrap()
                         toast.success(res, { duration: 2000, position: "bottom-center" })
                         setAddressDeatils({
                             name: "",
@@ -343,8 +344,30 @@ function Address({ sidebar, socket }: propType) {
                     }
                 </AnimatePresence>
                 <section className="old_addresses">
+
                     {
-                        listOfAddress.map((item: allAddressType) => {
+                        isError && (
+                            <div className="wrapper_error loader_wrapper flex justify-center items-center h-[calc(100vh-10.7rem)]">
+                                <p className='text-lg font-medium tracking-wider '>Opps something went wrong</p>
+                            </div>
+                        )
+                    }
+                    {
+                        isLoading ? (
+                            <div className="loader_wrapper flex justify-center items-center h-[calc(100vh-10.7rem)]">
+                                <Oval
+                                    height={50}
+                                    width={50}
+                                    color="#FF0303"
+                                    wrapperStyle={{}}
+                                    wrapperClass=""
+                                    visible={true}
+                                    ariaLabel='oval-loading'
+                                    secondaryColor="#4E31AA"
+                                    strokeWidth={2}
+                                    strokeWidthSecondary={2} />
+                            </div>
+                        ) : listOfAddress.map((item: allAddressType) => {
                             return <AddressList key={item._id} item={item} onActiveAddressHandler={onActiveAddressHandler} deleteAddress={deleteAddress} setCurrentAddress={setCurrentAddress} currentAddress={currentAddress} />
                         })
                     }

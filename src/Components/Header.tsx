@@ -91,7 +91,7 @@ function Header({ setItemList, itemList, isAuthenticateUser, profileImageURL, se
             </div>
             {/* =====================================CART Icons================================= */}
             <div className="right flex justify-evenly flex-[3]">
-                <CartIcons isAuthenticateUser={isAuthenticateUser} />
+                <CartIcons isAuthenticateUser={isAuthenticateUser} isAuth={isAuth.image} />
                 {/* ==================================Profile Icons======================== */}
                 {
                     (isAuthenticateUser && isAuth.image) ? typeof profileImageURL==="string"&&(<Profile_icons url={profileImageURL} showRightSideBar={showRightSideBar} setShowRightSideBar={setShowRightSideBar} />) :
