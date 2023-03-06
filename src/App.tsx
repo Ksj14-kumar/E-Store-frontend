@@ -19,7 +19,25 @@ function App() {
   const { data = [], isLoading, isSuccess, error, isError } = useGetProductsQuery("")
   const [onSuccess, { }] = useOnSuccessMutation()
   const [cartItems, { }] = useGetCartItemsMutation()
-  const dispatchApp = useAppDispatch()
+  useEffect(() => {
+    (async function () {
+      try {
+        const res = await onSuccess("").unwrap()
+        if (typeof res !== "number") {
+          if (Boolean(res)) {
+            dispatchItem(setIsAuth({
+              image: JSON.parse(JSON.stringify(res)).image
+              ,
+              isauth: true,
+              id: res._id
+            }))
+          }
+        }
+      } catch (err: unknown) {
+        console.warn(err)
+      }
+    })()
+  }, [])
   useEffect(() => {
     (async function () {
       try {
@@ -35,25 +53,7 @@ function App() {
   useEffect(() => {
     dispatchItem(showAllProducts(data))
   }, [])
-  useEffect(() => {
-    (async function () {
-      try {
-        const res = await onSuccess("").unwrap()
-        if (typeof res !== "number") {
-          if (Boolean(res)) {
-            dispatchApp(setIsAuth({
-              image: JSON.parse(JSON.stringify(res)).image
-              ,
-              isauth: true,
-              id: res._id
-            }))
-          }
-        }
-      } catch (err: unknown) {
-        console.warn(err)
-      }
-    })()
-  }, [])
+  
 
 
   return (
