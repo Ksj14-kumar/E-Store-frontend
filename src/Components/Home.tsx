@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from 'react'
-import { useGetProductsQuery } from '../slice/api/apiSlice'
+import { useGetCartItemsMutation, useGetProductsQuery, useOnSuccessMutation } from '../slice/api/apiSlice'
 import { ItemType } from '../types/types'
 import Header from './Header'
 import { Navigate, Route, Routes } from "react-router-dom"
@@ -12,12 +12,12 @@ import { Socket } from 'socket.io-client'
 import Payment_Success from './Orders/Payment_Success'
 import Payment_failure from './Orders/Payment_failure'
 import PageNotFound from './PageNotFound'
-import { isAuthenticate, productItems, useAppSelector } from '../store'
+import { isAuthenticate, productItems, useAppDispatch, useAppSelector } from '../store'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
 import { SerializedError } from '@reduxjs/toolkit'
 import Login from './LoginRegister/Login'
 import Protected from '../Auth/Protected'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 type propType = {
     socket: Socket,
     isLoading: boolean,
@@ -40,16 +40,14 @@ function Home({ socket, isLoading, isError, error, isSuccess }: propType) {
                     const res = await axios.get("/api/v1/static/profile", {
                         responseType: "blob"
                     })
-                    const reader= new FileReader()
-                    reader.onloadend= ()=>{
+                    const reader = new FileReader()
+                    reader.onloadend = () => {
                         setProfileImageUrl(reader.result)
                     }
                     reader.readAsDataURL(res.data)
-                    // const profileImageUrl = URL.createObjectURL(new Blob([res.data]))
-                    // setProfileImageUrl(profileImageUrl)
                 }
-                else{
-                    if(isAuth.image){
+                else {
+                    if (isAuth.image) {
                         setProfileImageUrl(isAuth.image)
                     }
                 }
@@ -59,9 +57,9 @@ function Home({ socket, isLoading, isError, error, isSuccess }: propType) {
         })()
     }, [])
     useEffect(() => {
-
         profileImage
     }, [])
+
     return (
         <div className='h-full'>
             <Header setShowLoginModal={setShowLoginModal} profileImageURL={profileImageURL} setItemList={setItemList} itemList={itemList} isAuthenticateUser={isAuthenticateUser} />

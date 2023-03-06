@@ -24,20 +24,18 @@ function App() {
       try {
         const res = await onSuccess("").unwrap()
         if (typeof res !== "number") {
-          if (Boolean(res)) {
             dispatchItem(setIsAuth({
               image: JSON.parse(JSON.stringify(res)).image
               ,
               isauth: true,
               id: res._id
             }))
-          }
         }
       } catch (err: unknown) {
         console.warn(err)
       }
     })()
-  }, [])
+  }, [dispatchItem,isLoading])
   useEffect(() => {
     (async function () {
       try {
@@ -48,7 +46,7 @@ function App() {
         console.warn(err)
       }
     })()
-  }, [])
+  }, [dispatchItem,isLoading])
 
   useEffect(() => {
     dispatchItem(showAllProducts(data))
