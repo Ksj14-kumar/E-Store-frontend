@@ -25,10 +25,10 @@ const links: profileType[] = [
 
 type propsType = {
     socket: Socket,
-    profileImageURL:string
+    profileImageURL: string | ArrayBuffer | null
 }
-function Profile({ socket,profileImageURL }: propsType) {
-    const isAuth= useAppSelector(isAuthenticate)
+function Profile({ socket, profileImageURL }: propsType) {
+    const isAuth = useAppSelector(isAuthenticate)
     const [showComponent, setShowComponent] = useState<stateType>({ profile: true, add: false, id: 1 } as stateType)
     const [getUserInfo, { isLoading, isSuccess }] = useGetUserNameMutation()
     const [info, setInfo] = useState<string>("")
@@ -37,8 +37,8 @@ function Profile({ socket,profileImageURL }: propsType) {
     const userInfo = useMemo(() => {
         (async function () {
             try {
-                if(isAuth.isHaveId){
-                    const res = await getUserInfo({ userId:isAuth.isHaveId }).unwrap()
+                if (isAuth.isHaveId) {
+                    const res = await getUserInfo({ userId: isAuth.isHaveId }).unwrap()
                     setInfo(res)
                 }
             } catch (err) {
@@ -57,7 +57,11 @@ function Profile({ socket,profileImageURL }: propsType) {
                     <div className="wrapper py-1 px-2 flex items-center">
                         <div className="image_container flex-[3]">
                             <div className="image rounded-full w-[2.7rem] h-[2.7rem]">
-                                <img src={profileImageURL} alt="" className="rounded-full w-full h-full" />
+                                {typeof profileImageURL === "string"
+                                    && (
+                                        <img src={profileImageURL} alt="" className="rounded-full w-full h-full" />
+                                    )
+                                }
                             </div>
                         </div>
                         <div className="message flex-[9]">

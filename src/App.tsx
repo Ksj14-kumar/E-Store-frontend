@@ -29,11 +29,11 @@ function App() {
         console.warn(err)
       }
     })()
-  }, [data])
+  }, [])
 
   useEffect(() => {
     dispatchItem(showAllProducts(data))
-  }, [data])
+  }, [])
   useEffect(() => {
     (async function () {
       try {
@@ -55,7 +55,7 @@ function App() {
         console.warn(err)
       }
     })()
-  }, [data])
+  }, [])
 
 
   return (

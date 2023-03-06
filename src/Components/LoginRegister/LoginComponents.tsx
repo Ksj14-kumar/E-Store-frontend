@@ -41,7 +41,7 @@ function LoginComponents() {
                 const res = await loginByAPI(loginDetails).unwrap()
                 navigate(res)
                 toast.success("login success", { duration: 3000, position: "bottom-center" })
-                window.location.href= "http://localhost:5100"
+                window.location.href= res
             } catch (err) {
                 if (isFetchBaseQueryError(err)) {
                     if (err.data) {

@@ -38,7 +38,7 @@ type propType = {
     setItemList: React.Dispatch<React.SetStateAction<ItemType[]>>,
     itemList: ItemType[],
     isAuthenticateUser: boolean,
-    profileImageURL: string,
+    profileImageURL: string | ArrayBuffer | null,
     setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 function Header({ setItemList, itemList, isAuthenticateUser, profileImageURL, setShowLoginModal }: propType) {
@@ -94,7 +94,7 @@ function Header({ setItemList, itemList, isAuthenticateUser, profileImageURL, se
                 <CartIcons isAuthenticateUser={isAuthenticateUser} />
                 {/* ==================================Profile Icons======================== */}
                 {
-                    (isAuthenticateUser && isAuth.image) ? <Profile_icons url={profileImageURL} showRightSideBar={showRightSideBar} setShowRightSideBar={setShowRightSideBar} /> :
+                    (isAuthenticateUser && isAuth.image) ? typeof profileImageURL==="string"&&(<Profile_icons url={profileImageURL} showRightSideBar={showRightSideBar} setShowRightSideBar={setShowRightSideBar} />) :
                         <div className="wrapper_login bg-[#d6d1d1ce]  rounded-md px-[.4rem] my-[2px] flex justify-center items-center">
                             <button
                                 onClick={() => {

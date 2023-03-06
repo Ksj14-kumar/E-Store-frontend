@@ -32,7 +32,7 @@ function Home({ socket, isLoading, isError, error, isSuccess }: propType) {
     const [ShowLoginModal, setShowLoginModal] = useState<boolean>(false)
     const data = useAppSelector(productItems)
     const isAuthenticateUser: boolean = Boolean(isAuth.auth) && Boolean(isAuth.isHaveId) && Boolean(isAuth.image)
-    const [profileImageURL, setProfileImageUrl] = useState<string>("")
+    const [profileImageURL, setProfileImageUrl] = useState<string | ArrayBuffer | null>(null)
     const profileImage = useMemo(() => {
         (async function () {
             try {
@@ -40,8 +40,13 @@ function Home({ socket, isLoading, isError, error, isSuccess }: propType) {
                     const res = await axios.get("/api/v1/static/profile", {
                         responseType: "blob"
                     })
-                    const profileImageUrl = URL.createObjectURL(new Blob([res.data]))
-                    setProfileImageUrl(profileImageUrl)
+                    const reader= new FileReader()
+                    reader.onloadend= ()=>{
+                        setProfileImageUrl(reader.result)
+                    }
+                    reader.readAsDataURL(res.data)
+                    // const profileImageUrl = URL.createObjectURL(new Blob([res.data]))
+                    // setProfileImageUrl(profileImageUrl)
                 }
                 else{
                     if(isAuth.image){
