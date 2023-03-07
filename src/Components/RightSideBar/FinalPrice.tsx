@@ -28,7 +28,7 @@ function FinalPrice({ listItem, totalAmout, sidebar }: propType) {
             <div className="total_amout px-[1rem] pb-2">
                 <div className="wrap border-[2px] py-[.5rem] border-x-0  border-dashed border-[#cac6c6] flex justify-between pr-[4rem]">
                     <h1 className='text-[1.2rem] pl-4  font-medium'>Total Amount</h1>
-                    <p className='text-[1.2rem] font-medium'>${Math.round(totalAmout)}</p>
+                    <p className='text-[1.2rem] font-medium'><span>&#8377;</span>{Math.round(totalAmout)}</p>
                 </div>
                 {sidebar && <div className="payment mt-4">
                     <button
