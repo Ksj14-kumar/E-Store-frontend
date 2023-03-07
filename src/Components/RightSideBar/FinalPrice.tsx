@@ -19,7 +19,11 @@ function FinalPrice({ listItem, totalAmout, sidebar }: propType) {
                     listItem.map((item: CartItemStatusType, index: number) => {
                         return <div key={index} className="price flex justify-between pr-[5rem] pl-4 items-center leading-[3rem]">
                             <p className='text-[1rem] font-serif tracking-wider truncate'>{item.name}</p>
-                            <p className={`text-[1rem] font-serif tracking-wider ${(item.id === 3 || item.id === 2) && "text-[#0ba103]"}`}>{item.status}</p>
+                            <p className={`text-[1rem] font-serif tracking-wider ${(item.id === 3 || item.id === 2) && "text-[#0ba103]"}`}>
+                                {item.id===2 && <span>&#8377;</span>}
+                                {item.id===1 && <span>&#8377;</span>}
+                                {item.status}
+                                </p>
                         </div>
                     })
                 }

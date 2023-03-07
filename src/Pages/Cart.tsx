@@ -15,6 +15,8 @@ function Cart({ sidebar, finalTotalAmount }: propType) {
     const isAuth= useAppSelector(isAuthenticate)
     const { totalAmout, totalItem, itemsList } = useAppSelector(ItemListInCart)
     const [itemDeleteLoader,setItemDeleteLoader]= useState<{id:number,active:boolean}>({id:-12,active:false})
+    const [AddItemLoader,setAddItemLoader]= useState<{id:number,active:boolean}>({id:-12,active:false})
+    const [RemoveITemLoader,setRemoveITemLoader]= useState<{id:number,active:boolean}>({id:-12,active:false})
     const dispatchItem = useAppDispatch()
     const [addProduct, { isLoading, isSuccess, error, isError }] = useAddProductMutation()
     const [popItem, { }] = useDeleteItemMutation()
@@ -22,8 +24,11 @@ function Cart({ sidebar, finalTotalAmount }: propType) {
     const addItemsInCart = async (item: ItemType): Promise<void> => {
         try {
             if(isAuth.isHaveId){
-                dispatchItem(addItem(item))
+                setAddItemLoader({id:item.id,active:true})
                 await addProduct({ item: item, userId:isAuth.isHaveId }).unwrap()
+                dispatchItem(addItem(item))
+                setAddItemLoader({id:item.id,active:false})
+
             }
         } catch (err) {
             // TODO:Handle error
@@ -45,14 +50,14 @@ function Cart({ sidebar, finalTotalAmount }: propType) {
                     setItemDeleteLoader({id:itemId.id,active:false})
                 }
                 else {
-                    setItemDeleteLoader({id:itemId.id,active:true})
+                    setRemoveITemLoader({id:itemId.id,active:true})
                     await popItem({
                         userId:isAuth.isHaveId,
                         status: 2,
                         params: itemId.id
                     }).unwrap()
                     dispatchItem(removeItem({ id: itemId.id }))
-                    setItemDeleteLoader({id:itemId.id,active:false})
+                    setRemoveITemLoader({id:itemId.id,active:false})
                 }
             }
         } catch (err) {
@@ -65,12 +70,12 @@ function Cart({ sidebar, finalTotalAmount }: propType) {
         {
             id: 1,
             name: `Price(${totalItem} items)`,
-            status: `$${Math.round(totalAmout)}`
+            status: `${Math.round(totalAmout)}`
         },
         {
             id: 2,
             name: "Discount",
-            status: "$0"
+            status: "0"
         },
         {
             id: 3,
@@ -84,7 +89,7 @@ function Cart({ sidebar, finalTotalAmount }: propType) {
                 <div className='pt-[3.7rem]  flex mobile:flex-col mobile:px-0 justify-center px-4 gap-x-2 bg-[#c1cee7] relative mobile:pb-[1rem] rounded-md'>
                     {!finalTotalAmount && <div className="left_side bg-[#d4d0d0] rounded-md flex-[7]">
                         {itemsList.map((item: ItemType, index: number) => {
-                            return <ItemList itemDeleteLoader={itemDeleteLoader} removeItemFromCart={removeItemFromCart} addItems={addItemsInCart} key={index} item={item} />
+                            return <ItemList itemDeleteLoader={itemDeleteLoader} removeItemFromCart={removeItemFromCart}  addItems={addItemsInCart} key={index} item={item}  AddItemLoader={AddItemLoader} RemoveITemLoader={RemoveITemLoader}/>
                         })}
                     </div>}
                     {sidebar &&

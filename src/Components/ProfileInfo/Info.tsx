@@ -9,8 +9,6 @@ function isValidEmail(email: string): boolean {
     return /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(email)
 }
 function Info() {
-    // TODO:Remove userID
-    const userId = "64005495b07cfce7f0cb4ad3"
     const isAuth = useAppSelector(isAuthenticate)
     const [nameInfo, setNameInfo] = useState<nameInfoType>({ name: "", lname: "" } as nameInfoType)
     const [email, setEmail] = useState<string>("")
@@ -108,12 +106,14 @@ function Info() {
                 return
             }
             try {
-                setOTPLoaderEmail(true)
-                const res = await getEmailOTPFromBackend({ userId, email }).unwrap()
-                setShowOtpEmailBox(true)
-                setOTPLoaderEmail(false)
-                setResendMessage("Resend")
-                toast.success(res, { duration: 2000, position: "bottom-center" })
+                if(isAuth.isHaveId){
+                    setOTPLoaderEmail(true)
+                    const res = await getEmailOTPFromBackend({ userId:isAuth.isHaveId, email }).unwrap()
+                    setShowOtpEmailBox(true)
+                    setOTPLoaderEmail(false)
+                    setResendMessage("Resend")
+                    toast.success(res, { duration: 2000, position: "bottom-center" })
+                }
             } catch (err) {
                 if (isFetchBaseQueryError(err)) {
                     const msg = JSON.parse(JSON.stringify(err.data))
