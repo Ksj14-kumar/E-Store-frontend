@@ -72,7 +72,6 @@ export const UserDetaisAPI = createApi({
                     responseHandler(response) {
                         return response.text()
                     },
-
                 }
             }
         }),
@@ -87,7 +86,6 @@ export const UserDetaisAPI = createApi({
                     },
                 }
             }
-
         }),
         getAllAddress: build.mutation<allAddressType[], Pick<nameAndLnameUpdatetype, "userId">>({
             query(item) {
@@ -101,7 +99,6 @@ export const UserDetaisAPI = createApi({
                 }
             }
         }),
-
         setActiveAddress: build.mutation<string, { userId: string, addressId: string }>({
             query(item) {
                 return {

@@ -6,7 +6,6 @@ import Register from './Register'
 type propType = {
     setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-
 function Login({ setShowLoginModal }: propType) {
     const navigate = useNavigate()
     const { pathname } = useLocation()
@@ -25,7 +24,6 @@ function Login({ setShowLoginModal }: propType) {
                             >
                                 <p className='text-[#ffffff] flex tracking-wider font-serif text-lg'>
                                     login
-
                                 </p>
                             </div>
                             <div className={`register ${showModal.isRegister ? "bg-[#c00757]" : "bg-[#084187]"} bg-[#2980ba] flex-[6] flex justify-center py-1 rounded-r-md cursor-pointer`}
@@ -37,7 +35,6 @@ function Login({ setShowLoginModal }: propType) {
                                 </p>
                             </div>
                         </div>
-
                         {
                             showModal.islogin ? <LoginComponents /> : <Register setShowModal={setShowModal} />
                         }
@@ -48,5 +45,4 @@ function Login({ setShowLoginModal }: propType) {
         </div>
     )
 }
-
 export default React.memo(Login)

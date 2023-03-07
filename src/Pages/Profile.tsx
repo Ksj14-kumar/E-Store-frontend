@@ -22,7 +22,6 @@ const links: profileType[] = [
         name: "Manage Addresses"
     }
 ]
-
 type propsType = {
     socket: Socket,
     profileImageURL: string | ArrayBuffer | null
@@ -32,8 +31,6 @@ function Profile({ socket, profileImageURL }: propsType) {
     const [showComponent, setShowComponent] = useState<stateType>({ profile: true, add: false, id: 1 } as stateType)
     const [getUserInfo, { isLoading, isSuccess }] = useGetUserNameMutation()
     const [info, setInfo] = useState<string>("")
-
-
     const userInfo = useMemo(() => {
         (async function () {
             try {
@@ -49,7 +46,6 @@ function Profile({ socket, profileImageURL }: propsType) {
     useEffect(() => {
         userInfo
     }, [])
-
     return (
         <div className='pt-[3.6rem] px-[5rem] flex gap-x-4 bg-[#cfcde5] flex-1 h-full mobile:flex-col mobile:px-0'>
             <div className="left_side flex-[3] bg-[#efebeb] rounded-md shadow-lg p-2 mobile:w-full">
@@ -81,7 +77,6 @@ function Profile({ socket, profileImageURL }: propsType) {
                                     />
                                 ) : (
                                     <p className="text-[1.2rem] truncate text-[#2c2a2a] font-serif tracking-wider">{info}</p>
-
                                 )
                             }
                         </div>

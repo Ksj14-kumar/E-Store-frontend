@@ -12,13 +12,10 @@ export const store = configureStore({
         [UserDetaisAPI.reducerPath]: UserDetaisAPI.reducer,
         item: ItemReducer,
         productsItemsLoad: productsItemReducer
-
     },
     middleware: (gdm) =>
         gdm().concat(apiSlice.middleware, newApiSlice.middleware, UserDetaisAPI.middleware),
 })
-
-
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 export const useAppDispatch: () => AppDispatch = useDispatch

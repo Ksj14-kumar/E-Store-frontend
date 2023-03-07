@@ -19,5 +19,4 @@ function HistoryList() {
         </div>
     )
 }
-
 export default HistoryList

@@ -4,7 +4,6 @@ import {useEffect} from 'react'
 import Error from '../Components/Error'
 import MainContainer from '../Components/MainContainer'
 import { ItemType, SerializedError } from '../types/types'
-
 type propType = {
     isLoading: boolean,
     isSuccess: boolean,
@@ -28,5 +27,4 @@ function HomePage({ error,setShowLoginModal, isLoading, data, isSuccess, isError
         </>
     )
 }
-
 export default HomePage;

@@ -56,7 +56,6 @@ function Items({ item, setShowLoginModal, isAuthenticateUser }: propType) {
                             else {
                                 setShowLoginModal(true)
                             }
-
                         }}
                     >Add to Cart</button>
                     <button className="btn bg-[#f2c40b] border-none btn-sm"

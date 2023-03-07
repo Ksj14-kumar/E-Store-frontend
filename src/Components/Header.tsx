@@ -24,7 +24,6 @@ const rightSideBarList = [
         name: "Orders",
         icon: <VscArchive className="text-[1.3rem]" />,
         path: "/orders"
-
     },
     {
         id: 3,
@@ -33,7 +32,6 @@ const rightSideBarList = [
         path: "/logout"
     }
 ]
-
 type propType = {
     setItemList: React.Dispatch<React.SetStateAction<ItemType[]>>,
     itemList: ItemType[],
@@ -48,11 +46,9 @@ function Header({ setItemList, itemList, isAuthenticateUser, setShowLoginModal }
     const [showFocus, setShowFocus] = useState<boolean>(false)
     const { data, isLoading } = useFilterItemsQuery(Query)
     const navigate = useNavigate()
-
     useEffect(() => {
         dispatchItems(showAllProducts(data))
     }, [data])
-
     function onInputSearchHandler(e: React.ChangeEvent<HTMLInputElement>) {
         setQuery(e.target.value.toLowerCase())
     }
@@ -104,9 +100,6 @@ function Header({ setItemList, itemList, isAuthenticateUser, setShowLoginModal }
                                 className='btn bg-[#e8e3e3] text-black hover:text-[#fff] border-none btn-sm'>login</button>
                         </div>)
                 }
-
-
-
                 {/* ===============================================Right Side Navigation================================== */}
                 <AnimatePresence>
                     {showRightSideBar && <motion.div
@@ -123,14 +116,11 @@ function Header({ setItemList, itemList, isAuthenticateUser, setShowLoginModal }
                                     })
                                 }
                             </ul>
-
                         </div>
                     </motion.div>}
                 </AnimatePresence>
             </div>
-
         </div >
     )
 }
-
 export default Header

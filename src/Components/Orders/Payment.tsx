@@ -3,8 +3,6 @@ import Loader, { OvalLoader } from '../../loader/Loader';
 import { useOnGivePaymentMutation } from '../../slice/api/UserinfoAPI';
 import { isAuthenticate, useAppSelector } from '../../store';
 import { isErrorWithMessage, isFetchBaseQueryError } from '../../types/types';
-
-
 function Payment() {
     const isAuth = useAppSelector(isAuthenticate)
     const [onGivePay, { isLoading }] = useOnGivePaymentMutation()
@@ -26,9 +24,7 @@ function Payment() {
                 return
             }
         }
-
     }
-
     return (
         <>
             <div className='bg-[#e5e0e0] rounded-m rounded-t-none px-1 py-2'>
@@ -42,5 +38,4 @@ function Payment() {
         </>
     )
 }
-
 export default Payment

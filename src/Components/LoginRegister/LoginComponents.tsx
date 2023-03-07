@@ -19,8 +19,6 @@ const inputFieldsArray = [
         id: 2
     }
 ]
-
-
 function LoginComponents() {
     const [loginDetails, dispatch] = useReducer(reducerHandler, initialState)
     const [loginByAPI, { isLoading, isSuccess, error }] = useUserLoginMutation()
@@ -33,7 +31,6 @@ function LoginComponents() {
             dispatch({ type: "password", payload: e.target.value })
         }
     }
-
     const onSave = Boolean(loginDetails.password) && Boolean(loginDetails.email)
     async function onInputDetailsSubmit() {
         if (onSave) {
@@ -70,7 +67,6 @@ function LoginComponents() {
                         </div>
                         )
                     })}
-
                 </div>
                 <footer className="footer px-[2rem]">
                     <button
@@ -85,5 +81,4 @@ function LoginComponents() {
         </div>
     )
 }
-
 export default React.memo(LoginComponents)

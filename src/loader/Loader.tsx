@@ -16,19 +16,11 @@ function Loader({ width, height }: propType): JSX.Element {
         />
     )
 }
-
 export default Loader
-
-
-
-
-
-
 type props = {
     w: number,
     h: number
 }
-
 export function OvalLoader({ h, w }: props): JSX.Element {
     return <Oval
         height={h}
@@ -41,6 +33,5 @@ export function OvalLoader({ h, w }: props): JSX.Element {
         secondaryColor="#FFED00"
         strokeWidth={2}
         strokeWidthSecondary={2}
-
     />
 }

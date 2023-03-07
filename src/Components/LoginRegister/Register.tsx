@@ -32,15 +32,12 @@ const registerInput: registerInputType[] = [
         type: "password"
     },
 ]
-
-
 type propType = {
     setShowModal: React.Dispatch<React.SetStateAction<{
         islogin: boolean;
         isRegister: boolean;
     }>>
 }
-
 function Register({ setShowModal }: propType) {
     const [RegisterUser, { isLoading, isSuccess, isError }] = useUserRegisterMutation()
     const [emailVerifyOTP, { }] = useEmailOTPVerifyMutation()
@@ -85,7 +82,6 @@ function Register({ setShowModal }: propType) {
             }
         }
     }
-
     async function onOTPVerify() {
         if (Boolean(inputOTP)) {
             try {
@@ -124,7 +120,6 @@ function Register({ setShowModal }: propType) {
             }
         }
     }
-
     return (
         <>
             <div className="wrapper_signup">
@@ -152,7 +147,6 @@ function Register({ setShowModal }: propType) {
                         })
                     }
                 </div>
-
                 {/* ==========================================OTP Box======================== */}
                 {otpBox && <div className="input_fields  py-2   w-full flex justify-start pl-[4.2rem]">
                     <input type="text" placeholder="OTP" className="input  input-sm  input-bordered input-info w-[5rem] text-center flex justify-center items-center  "
@@ -188,5 +182,4 @@ function Register({ setShowModal }: propType) {
         </>
     )
 }
-
 export default React.memo(Register)

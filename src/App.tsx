@@ -47,17 +47,12 @@ function App() {
       }
     })()
   }, [dispatchItem, isLoading])
-
   useEffect(() => {
     dispatchItem(showAllProducts(data))
   }, [])
-
-
-
   return (
     <div className="App h-full bg-[#dbe3ee]">
       <Home socket={socket} isLoading={isLoading} isSuccess={isSuccess} isError={isError} error={error} />
-
       <Toaster />
     </div>
   )

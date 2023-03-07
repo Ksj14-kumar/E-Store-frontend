@@ -23,7 +23,6 @@ type propType = {
     isError: boolean,
     error: FetchBaseQueryError | SerializedError | undefined,
     isSuccess: boolean
-
 }
 function Home({ socket, isLoading, isError, error, isSuccess }: propType) {
     const isAuth = useAppSelector(isAuthenticate)
@@ -32,7 +31,6 @@ function Home({ socket, isLoading, isError, error, isSuccess }: propType) {
     const data = useAppSelector(productItems)
     const isAuthenticateUser: boolean = Boolean(isAuth.auth) && Boolean(isAuth.isHaveId) && Boolean(isAuth.image)
     const [profileImageURL, setProfileImageUrl] = useState<string | ArrayBuffer | null>(null)
-
     const profileImage = useMemo(() => {
         (async function () {
             try {
@@ -59,7 +57,6 @@ function Home({ socket, isLoading, isError, error, isSuccess }: propType) {
     useEffect(() => {
         profileImage
     }, [])
-
     return (
         <div className='h-full'>
             <Header setShowLoginModal={setShowLoginModal}  setItemList={setItemList} itemList={itemList} isAuthenticateUser={isAuthenticateUser} />
@@ -74,21 +71,17 @@ function Home({ socket, isLoading, isError, error, isSuccess }: propType) {
                             <Route path='/profile' element={<Profile socket={socket} profileImageURL={profileImageURL} />} />
                             <Route path='/orders' element={<Order />} />
                             <Route path='/cart' element={<Cart sidebar={true} finalTotalAmount={false} />} />
-
                         </>
                     ) : <Route
                         path="*"
                         element={<Navigate to="/" replace />}
                     />
                 }{
-
                 }
-
                 <Route path='*' element={<PageNotFound />} />
                 <Route path='/' element={<HomePage isAuthenticateUser={isAuthenticateUser} setShowLoginModal={setShowLoginModal} error={error} isError={isError} isLoading={isLoading} data={data} isSuccess={isSuccess} />} />
             </Routes>
         </div>
     )
 }
-
 export default Home

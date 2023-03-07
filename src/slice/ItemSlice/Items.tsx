@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, PayloadActionCreator } from "@reduxjs/toolkit"
 import { itemAddType, ItemType } from "../../types/types"
 import { getCartItemFromDBType } from "../../types/types"
-
 type initialType = {
     items: ItemType[],
     totalItem: number,
@@ -11,7 +10,6 @@ const initialState: initialType = {
     items: [],
     totalItem: 0,
     amount: 0
-
 }
 type productsType = {
     products: ItemType[],
@@ -30,7 +28,6 @@ const productsItems: productsType = {
         auth: isauth ? JSON.parse(isauth) : null
     }
 }
-
 const ItemSlice = createSlice({
     name: "item",
     initialState,
@@ -112,7 +109,6 @@ const ItemSlice = createSlice({
         }
     }
 })
-
 const productItems = createSlice({
     name: "products",
     initialState: productsItems,
@@ -128,15 +124,10 @@ const productItems = createSlice({
                 isHaveId: action.payload.id,
                 image: action.payload.image,
                 auth: action.payload.isauth
-
             }
         }
     },
-
 })
-
-
-
 export const { addItem, decreaseItemCount, removeItem, loadAllItemsIntoCart } = ItemSlice.actions
 export const { showAllProducts, setIsAuth } = productItems.actions
 export const productsItemReducer = productItems.reducer

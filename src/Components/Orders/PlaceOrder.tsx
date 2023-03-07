@@ -4,7 +4,6 @@ import { Socket } from 'socket.io-client'
 import Cart from '../../Pages/Cart'
 import Address from '../ProfileInfo/Address'
 import Payment from './Payment'
-
 type propType = {
     socket: Socket
 }
@@ -90,7 +89,6 @@ function PlaceOrder({ socket }: propType) {
                         }
                     </AnimatePresence>
                 </div>
-
             </div>
         </div>
     )

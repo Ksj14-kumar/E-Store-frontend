@@ -4,7 +4,6 @@ import DeliveryItems from "./DeliveryItems"
 import DeliveryStatus from "./DeliveryStatus"
 import React from 'react';
 import OrderDeliveryAddress from "./OrderDeliveryAddress"
-
 type propType = {
     item: orderItemType
 }
@@ -39,5 +38,4 @@ function OrderItems({ item }: propType) {
         </motion.div>
     )
 }
-
 export default React.memo(OrderItems)

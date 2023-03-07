@@ -7,7 +7,6 @@ type propType = {
     price: number,
     paymentStatus: string,
     deliveryStatus:string
-
 }
 function DeliveryStatus({ time, price, paymentStatus,deliveryStatus }: propType) {
     const [day,month,dayInNum,year]= new Date(time).toString().split(" ")
@@ -26,10 +25,8 @@ function DeliveryStatus({ time, price, paymentStatus,deliveryStatus }: propType)
             <p className="text-md font-sans italic flex items-center gap-2 py-2 text-[#fff] bg-[#6e0202] px-4 rounded-md">
                 Delivery status:
                 <p className="bg-red-500 border w-[1rem] h-[1rem] rounded-full"></p> {deliveryStatus}
-
             </p>
         </div>
     )
 }
-
 export default React.memo(DeliveryStatus)

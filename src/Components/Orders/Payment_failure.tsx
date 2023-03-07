@@ -14,5 +14,4 @@ function Payment_failure() {
         </div>
     )
 }
-
 export default Payment_failure

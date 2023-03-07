@@ -24,5 +24,4 @@ function Profile_icons({ setShowRightSideBar, showRightSideBar, isHaveImage }: p
         </div>
     )
 }
-
 export default Profile_icons;

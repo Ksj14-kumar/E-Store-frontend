@@ -37,7 +37,6 @@ const gridTemplate: addressType[] = [
         id: 7,
         placeHolder: "mobile(12 digit)"
     },
-
 ]
 type propType = {
     sidebar: boolean,
@@ -78,8 +77,6 @@ function Address({ sidebar, socket }: propType) {
         })
     }
     const onSubmit = Boolean(addressDeatils.name) && Boolean(addressDeatils.state) && Boolean(addressDeatils.pincode) && Boolean(addressDeatils.mobile) && Boolean(addressDeatils.locality) && Boolean(addressDeatils.city) && Boolean(addressDeatils.address)
-
-
     // ===========================================Call Back functions==================================
     const laodAllAddressFromDB = useMemo(() => {
         (async function load() {
@@ -100,9 +97,7 @@ function Address({ sidebar, socket }: propType) {
         }
         if (onSubmit && addressDeatils.mobile.length === 12) {
             try {
-
                 if (isAuth.isHaveId) {
-
                     if (socket.connected) {
                         socket.emit("newAddress", { ...addressDeatils, userId: isAuth.isHaveId })
                     }
@@ -344,7 +339,6 @@ function Address({ sidebar, socket }: propType) {
                     }
                 </AnimatePresence>
                 <section className="old_addresses">
-
                     {
                         isError && (
                             <div className="wrapper_error loader_wrapper flex justify-center items-center h-[calc(100vh-10.7rem)]">

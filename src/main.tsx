@@ -7,7 +7,6 @@ import { Provider } from 'react-redux'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { BrowserRouter } from "react-router-dom"
-
 AOS.init();
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   // <React.StrictMode>

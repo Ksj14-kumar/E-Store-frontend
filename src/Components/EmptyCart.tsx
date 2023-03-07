@@ -1,6 +1,5 @@
 import React from 'react'
 import { BsCartXFill } from 'react-icons/bs'
-
 function EmptyCart() {
     return (
         <div className='pt-[3rem] bg-[#d4d0d0] w-full h-screen md:p-[10rem]'>
@@ -13,5 +12,4 @@ function EmptyCart() {
         </div>
     )
 }
-
 export default EmptyCart

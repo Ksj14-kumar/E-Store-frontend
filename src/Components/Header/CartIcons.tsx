@@ -25,5 +25,4 @@ function CartIcons({ isAuthenticateUser,isAuth }: propType) {
         </div>
     )
 }
-
 export default CartIcons

@@ -18,5 +18,4 @@ function Header({ setShowLoginModal }: propType) {
         </header>
     )
 }
-
 export default React.memo(Header)

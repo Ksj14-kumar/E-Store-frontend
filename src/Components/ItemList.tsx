@@ -8,7 +8,6 @@ type propType = {
     AddItemLoader: { id: number, active: boolean },
     RemoveITemLoader: { id: number, active: boolean },
 }
-
 function ItemList({ item, addItems, itemDeleteLoader,RemoveITemLoader, removeItemFromCart, AddItemLoader }: propType) {
     return (
         <div className="items_details p-3 py-2">
@@ -53,7 +52,6 @@ function ItemList({ item, addItems, itemDeleteLoader,RemoveITemLoader, removeIte
                             className='text-[1.2rem] rounded-l-none px-4 btn btn-sm bg-[#4dea04] rounded-md border-none'
                             onClick={() => {
                                 removeItemFromCart({ id: item.id, status: 1 })
-
                             }}
                         >-</button>
                     </div>
@@ -62,5 +60,4 @@ function ItemList({ item, addItems, itemDeleteLoader,RemoveITemLoader, removeIte
         </div>
     )
 }
-
 export default React.memo(ItemList)

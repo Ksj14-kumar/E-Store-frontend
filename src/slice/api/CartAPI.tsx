@@ -25,7 +25,6 @@ export const newApiSlice = createApi({
                     responseHandler(response) {
                         return response.text()
                     },
-
                 }
             }
         }),

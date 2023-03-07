@@ -23,5 +23,4 @@ function Side_Login() {
         </div>
     )
 }
-
 export default React.memo(Side_Login)

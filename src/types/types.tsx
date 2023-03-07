@@ -1,6 +1,4 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query"
-
-
 export interface ItemType {
     id: number,
     title: string,
@@ -11,20 +9,17 @@ export interface ItemType {
     rating: { rate: number, count: number },
     count: number
 }
-
 export interface SerializedError {
     name?: string
     message?: string
     stack?: string
     code?: string
 }
-
 export interface CartItemStatusType {
     id: number,
     name: string,
     status: string
 }
-
 export type addressType = {
     id: number,
     placeHolder: string,
@@ -33,12 +28,10 @@ export type profileType = {
     id: number,
     name: string
 }
-
 export type nameInfoType = {
     name: string,
     lname: string
 }
-
 export interface userAddressesType {
     name: string,
     address: string,
@@ -48,17 +41,12 @@ export interface userAddressesType {
     state: string,
     mobile: string
 }
-
-
-
-
 // ==================================RTK Query Types================================
 export type getCartItemFromDBType = {
     items: ItemType[],
     totalItems: number,
     totalAmount: number
 }
-
 export type itemAddType = {
     item: ItemType,
     userId: string
@@ -68,22 +56,18 @@ export type deleteItemType = {
     status: number,
     params: number
 }
-
 // =//======================================RTK QUERY UserInformation Change types=======================
 export interface nameAndLnameUpdatetype {
     name: string,
     lname: string,
     status: number,
     userId: string
-
 }
-
 export function isFetchBaseQueryError(
     error: unknown
 ): error is FetchBaseQueryError {
     return typeof error === 'object' && error != null && 'status' in error
 }
-
 export function isErrorWithMessage(
     error: unknown
 ): error is { message: string } {
@@ -94,13 +78,11 @@ export function isErrorWithMessage(
         typeof (error as any).message === 'string'
     )
 }
-
 export interface setActiveAddressType {
     active: boolean,
     userId: string,
     addressId: string
 }
-
 export interface allAddressType {
     _id: string,
     name: string,
@@ -114,27 +96,18 @@ export interface allAddressType {
     active: boolean,
     __v: number
 }
-
 export interface rigthSidebarList {
     name: string,
     id: number,
     icon: JSX.Element,
     path: string
 }
-
-
 // =================================================Socket Connection=====================================
-
 export interface socketAddressType {
     msg: string | allAddressType[],
     status: number
 }
-
-
 // /================================Order Items types==================================================
-
-
-
 export interface deliveryItemsTypes {
     category: string,
     count: number,
@@ -148,7 +121,6 @@ export interface deliveryItemsTypes {
     },
     title: string,
 }
-
 export interface orderItemType {
     address: {
         city: string,
@@ -165,10 +137,7 @@ export interface orderItemType {
     phone: string,
     time: number
 }
-
-
 // =====================================Register Types===========================================
-
 export type registerUserInfoType = {
     email: string,
     password: string
@@ -199,14 +168,10 @@ export interface initial_register_reducer_type {
         setResendButtonMessage: string
     }
 }
-
-
-
 export type login_reducer_actionType = {
     type: "email" | "password",
     payload: string
 }
-
 export type login_Reducer_initial_type = {
     email: string,
     password: string

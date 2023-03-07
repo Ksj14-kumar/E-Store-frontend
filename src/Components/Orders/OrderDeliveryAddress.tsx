@@ -1,8 +1,5 @@
 import React from 'react'
 import { orderItemType } from '../../types/types'
-
-
-
 type propType = {
     address: Pick<orderItemType, "address">,
     phone: Pick<orderItemType, "phone">,
@@ -19,9 +16,7 @@ function OrderDeliveryAddress({ address, phone, name }: propType) {
                 <p className="text-md font-sans italic">{address.address.city}, {address.address.postal_code},{address.address.state}</p>
                 <p className="text-md font-sans italic font-medium">Mobile, {phone.phone}</p>
             </div>
-
         </div>
     )
 }
-
 export default React.memo(OrderDeliveryAddress)

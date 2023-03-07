@@ -10,9 +10,6 @@ type propType = {
 function NavigationList({ item, id }: propType) {
     const navigate = useNavigate()
     const [onLogout, { isLoading, isSuccess }] = useUserOnLogoutMutation()
-
-
-
     async function onLogoutHandler() {
         try {
             const res = await onLogout("").unwrap()
@@ -22,7 +19,6 @@ function NavigationList({ item, id }: propType) {
             console.warn(err)
         }
     }
-
     return (
         <motion.li
             initial={{ scale: 1 }}
@@ -47,5 +43,4 @@ function NavigationList({ item, id }: propType) {
         </motion.li>
     )
 }
-
 export default React.memo(NavigationList)

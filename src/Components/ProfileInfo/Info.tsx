@@ -4,7 +4,6 @@ import { isErrorWithMessage, isFetchBaseQueryError, nameInfoType } from '../../t
 import { toast } from "react-hot-toast"
 import Loader from '../../loader/Loader'
 import { isAuthenticate, useAppSelector } from '../../store'
-
 function isValidEmail(email: string): boolean {
     return /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(email)
 }
@@ -50,8 +49,6 @@ function Info() {
     function onEmailOTP(e: React.ChangeEvent<HTMLInputElement>) {
         setEmailOTP(e.target.value)
     }
-
-
     function onMobileOTPButton() {
         if (Boolean(mobile)) {
             setShowMobileOTPBox(true)
@@ -92,13 +89,11 @@ function Info() {
                 console.warn(err)
                 toast.error("something error, reload page", { duration: 2000, position: "bottom-center" })
             }
-
             finally {
                 setGenderLoader(false)
             }
         }
     }
-
     async function onGetEmailOTP() {
         if (Boolean(email)) {
             if (!isValidEmail(email)) {
@@ -128,7 +123,6 @@ function Info() {
             }
         }
     }
-
     async function onEmailOTPVerify() {
         if (Boolean(getEmailOTP) && (getEmailOTP.length !== 4)) {
             toast.error("invalid otp", { duration: 2000, position: "bottom-center" })
@@ -137,7 +131,6 @@ function Info() {
         if (Boolean(getEmailOTP) && (getEmailOTP.length === 4)) {
             try {
                 if (isAuth.isHaveId) {
-
                     setEmailOTPVerificationLoader(true)
                     const res = await EmailOTPVerify({ otp: getEmailOTP, userId:isAuth.isHaveId, email }).unwrap()
                     toast.success(res, { duration: 2000, position: "bottom-center" })
@@ -165,7 +158,6 @@ function Info() {
             <header className="text-[1.3rem] w-full font-serif indent-8  ">
                 <p className="">Personal Info</p>
             </header>
-
             <main className="info_section">
                 <section className="name_lname py-3 w-full indent-8 mobile:indent-0 mobile:px-2">
                     <div className="name py-2 mobile:w-full">
@@ -268,7 +260,6 @@ function Info() {
                         </div>
                         <div className="otp_buton">
                             <button
-
                                 disabled={!getEmailOTP || EmailOTPVerifyLoader}
                                 onClick={() => {
                                     onEmailOTPVerify()
@@ -309,10 +300,8 @@ function Info() {
                         </div>
                     </div>}
                 </div>
-
             </main>
         </div>
     )
 }
-
 export default Info

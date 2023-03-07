@@ -1,13 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CartItemStatusType, ItemType } from '../../types/types'
-
 type propType = {
     listItem: CartItemStatusType[],
     totalAmout: number,
     sidebar: boolean,
 }
-
 function FinalPrice({ listItem, totalAmout, sidebar }: propType) {
     const navigate = useNavigate()
     return (
@@ -27,7 +25,6 @@ function FinalPrice({ listItem, totalAmout, sidebar }: propType) {
                         </div>
                     })
                 }
-
             </div>
             <div className="total_amout px-[1rem] pb-2">
                 <div className="wrap border-[2px] py-[.5rem] border-x-0  border-dashed border-[#cac6c6] flex justify-between pr-[4rem]">
@@ -45,5 +42,4 @@ function FinalPrice({ listItem, totalAmout, sidebar }: propType) {
         </>
     )
 }
-
 export default React.memo(FinalPrice)

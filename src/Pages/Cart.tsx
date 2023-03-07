@@ -20,7 +20,6 @@ function Cart({ sidebar, finalTotalAmount }: propType) {
     const dispatchItem = useAppDispatch()
     const [addProduct, { isLoading, isSuccess, error, isError }] = useAddProductMutation()
     const [popItem, { }] = useDeleteItemMutation()
-
     const addItemsInCart = async (item: ItemType): Promise<void> => {
         try {
             if(isAuth.isHaveId){
@@ -28,7 +27,6 @@ function Cart({ sidebar, finalTotalAmount }: propType) {
                 await addProduct({ item: item, userId:isAuth.isHaveId }).unwrap()
                 dispatchItem(addItem(item))
                 setAddItemLoader({id:item.id,active:false})
-
             }
         } catch (err) {
             // TODO:Handle error
@@ -107,5 +105,4 @@ function Cart({ sidebar, finalTotalAmount }: propType) {
         </>
     )
 }
-
 export default React.memo(Cart)

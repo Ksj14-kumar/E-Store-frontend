@@ -1,5 +1,4 @@
 import React from 'react'
-
 function Payment_Success() {
     return (
         <div className='pt-[3rem]'>
@@ -16,5 +15,4 @@ function Payment_Success() {
         </div>
     )
 }
-
 export default Payment_Success

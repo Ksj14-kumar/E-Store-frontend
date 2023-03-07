@@ -1,8 +1,5 @@
 import React from 'react'
 import { deliveryItemsTypes } from '../../types/types'
-
-
-
 type propType = {
     url?: string,
     index: number,
@@ -19,5 +16,4 @@ function DeliveryItems({ index, item }: propType) {
         </div>
     )
 }
-
 export default React.memo(DeliveryItems)

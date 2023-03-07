@@ -42,7 +42,6 @@ function AddressList({
                 </div>
             </div>
             <p className='font-serif tracking-wider flex items-center'><p className=' font-medium mr-4 text-lg'>{item.name}</p> +{item.mobile}</p>
-
             <div className="address py-1">
                 <address className='flex'>
                     {item.address}, {item.pincode}, {item.city}, {item.state}
@@ -66,5 +65,4 @@ function AddressList({
         </div>
     )
 }
-
 export default AddressList
