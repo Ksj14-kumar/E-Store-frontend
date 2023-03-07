@@ -24,18 +24,18 @@ function App() {
       try {
         const res = await onSuccess("").unwrap()
         if (typeof res !== "number") {
-            dispatchItem(setIsAuth({
-              image: JSON.parse(JSON.stringify(res)).image
-              ,
-              isauth: true,
-              id: res._id
-            }))
+          dispatchItem(setIsAuth({
+            image: JSON.parse(JSON.stringify(res)).image
+            ,
+            isauth: true,
+            id: res._id
+          }))
         }
       } catch (err: unknown) {
         console.warn(err)
       }
     })()
-  }, [dispatchItem,isLoading])
+  }, [dispatchItem, isLoading])
   useEffect(() => {
     (async function () {
       try {
@@ -46,20 +46,18 @@ function App() {
         console.warn(err)
       }
     })()
-  }, [dispatchItem,isLoading])
+  }, [dispatchItem, isLoading])
 
   useEffect(() => {
     dispatchItem(showAllProducts(data))
   }, [])
-  
+
 
 
   return (
     <div className="App h-full bg-[#dbe3ee]">
       <Home socket={socket} isLoading={isLoading} isSuccess={isSuccess} isError={isError} error={error} />
-      <Routes>
 
-      </Routes>
       <Toaster />
     </div>
   )

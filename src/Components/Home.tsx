@@ -1,8 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react'
-import { useGetCartItemsMutation, useGetProductsQuery, useOnSuccessMutation } from '../slice/api/apiSlice'
 import { ItemType } from '../types/types'
 import Header from './Header'
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes, redirect } from "react-router-dom"
 import Cart from '../Pages/Cart'
 import HomePage from '../Pages/HomePage'
 import Profile from '../Pages/Profile'
@@ -17,7 +16,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
 import { SerializedError } from '@reduxjs/toolkit'
 import Login from './LoginRegister/Login'
 import Protected from '../Auth/Protected'
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 type propType = {
     socket: Socket,
     isLoading: boolean,
@@ -33,15 +32,16 @@ function Home({ socket, isLoading, isError, error, isSuccess }: propType) {
     const data = useAppSelector(productItems)
     const isAuthenticateUser: boolean = Boolean(isAuth.auth) && Boolean(isAuth.isHaveId) && Boolean(isAuth.image)
     const [profileImageURL, setProfileImageUrl] = useState<string | ArrayBuffer | null>(null)
+
     const profileImage = useMemo(() => {
         (async function () {
             try {
                 if (isAuth.image?.endsWith(".png")) {
-                    const res = await axios.get("/api/v1/static/profile", {
+                    const res = await axios.get(process.env.BACKEND_URL + "/api/v1/static/profile", {
                         responseType: "blob"
                     })
                     const reader = new FileReader()
-                    reader.onloadend = () => {
+                    reader.onload = () => {
                         setProfileImageUrl(reader.result)
                     }
                     reader.readAsDataURL(res.data)
@@ -62,22 +62,24 @@ function Home({ socket, isLoading, isError, error, isSuccess }: propType) {
 
     return (
         <div className='h-full'>
-            <Header setShowLoginModal={setShowLoginModal} profileImageURL={profileImageURL} setItemList={setItemList} itemList={itemList} isAuthenticateUser={isAuthenticateUser} />
+            <Header setShowLoginModal={setShowLoginModal}  setItemList={setItemList} itemList={itemList} isAuthenticateUser={isAuthenticateUser} />
             {ShowLoginModal && <Login setShowLoginModal={setShowLoginModal} />}
             <Routes>
-                {isAuthenticateUser &&
+                {isAuthenticateUser ?
                     (
                         <>
                             <Route path='/success_payment' element={<Payment_Success />} />
                             <Route path='/failure' element={<Payment_failure />} />
-
                             <Route path='/place/order' element={<PlaceOrder socket={socket} />} />
                             <Route path='/profile' element={<Profile socket={socket} profileImageURL={profileImageURL} />} />
                             <Route path='/orders' element={<Order />} />
                             <Route path='/cart' element={<Cart sidebar={true} finalTotalAmount={false} />} />
 
                         </>
-                    )
+                    ) : <Route
+                        path="*"
+                        element={<Navigate to="/" replace />}
+                    />
                 }{
 
                 }

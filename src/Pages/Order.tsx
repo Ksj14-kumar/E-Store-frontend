@@ -4,6 +4,7 @@ import { useGetOrdersMutation } from '../slice/api/CartAPI'
 import { orderItemType } from '../types/types'
 import React from 'react'
 import { isAuthenticate, useAppSelector } from '../store'
+import { Oval } from 'react-loader-spinner'
 function Order() {
     const isAuth = useAppSelector(isAuthenticate)
     const [getOrders, { isLoading, isSuccess }] = useGetOrdersMutation()
@@ -32,14 +33,36 @@ function Order() {
                 <p className='tracking-wider'>Orders</p>
             </header>
             <div className="mt-2 mobile:w-full wide:w-full">
+
                 {
-                    orderItems.length > 0 ? orderItems.map((item: orderItemType, index: number) => {
-                        return <OrderItems key={index} item={item} />
-                    }) :
-                        <div className="not_found mt-[3rem] flex justify-center">
-                            <p className='text-[1.3rem] font-serif tracking-wider'>no order found</p>
+                    isLoading ? (
+                        <div className="loader flex justify-center items-center h-[calc(100vh-9rem)]">
+                            <Oval
+                                height={50}
+                                width={50}
+                                color="#0404FC"
+                                wrapperStyle={{}}
+                                wrapperClass=""
+                                visible={true}
+                                ariaLabel='oval-loading'
+                                secondaryColor="#FFFFFF"
+                                strokeWidth={2}
+                                strokeWidthSecondary={2}
+
+                            />
+
                         </div>
+                    ) :
+                        (
+                            orderItems.length > 0 ? orderItems.map((item: orderItemType, index: number) => {
+                                return <OrderItems key={index} item={item} />
+                            }) :
+                                <div className="not_found mt-[3rem] flex justify-center">
+                                    <p className='text-[1.3rem] font-serif tracking-wider'>no order found</p>
+                                </div>
+                        )
                 }
+
             </div>
         </div>
     )

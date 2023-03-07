@@ -1,10 +1,10 @@
 import React from 'react'
 type propType = {
-    url: string,
     setShowRightSideBar: React.Dispatch<React.SetStateAction<boolean>>,
-    showRightSideBar: boolean
+    showRightSideBar: boolean,
+    isHaveImage: string | null
 }
-function Profile_icons({ url, setShowRightSideBar, showRightSideBar }: propType) {
+function Profile_icons({ setShowRightSideBar, showRightSideBar, isHaveImage }: propType) {
     return (
         <div className="user_info flex justify-center items-center mobile:pr-2 pl-2">
             <div className="avatar cursor-pointer">
@@ -13,11 +13,16 @@ function Profile_icons({ url, setShowRightSideBar, showRightSideBar }: propType)
                         setShowRightSideBar(!showRightSideBar)
                     }}
                 >
-                    <img crossOrigin="anonymous" src={url} />
+                    {isHaveImage !== null && (isHaveImage.endsWith(".png") ? (
+                        <img crossOrigin="anonymous" src={process.env.BACKEND_URL + "/api/v1/static/profile"} />
+                    ) : (
+                        <img crossOrigin="anonymous" src={isHaveImage} />
+                    ))
+                    }
                 </div>
             </div>
         </div>
     )
 }
 
-export default Profile_icons
+export default Profile_icons;

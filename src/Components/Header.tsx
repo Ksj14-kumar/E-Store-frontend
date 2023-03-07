@@ -38,10 +38,9 @@ type propType = {
     setItemList: React.Dispatch<React.SetStateAction<ItemType[]>>,
     itemList: ItemType[],
     isAuthenticateUser: boolean,
-    profileImageURL: string | ArrayBuffer | null,
     setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-function Header({ setItemList, itemList, isAuthenticateUser, profileImageURL, setShowLoginModal }: propType) {
+function Header({ setItemList, itemList, isAuthenticateUser, setShowLoginModal }: propType) {
     const [showRightSideBar, setShowRightSideBar] = useState<boolean>(false)
     const [Query, setQuery] = useState<string>("")
     const dispatchItems = useAppDispatch()
@@ -68,10 +67,6 @@ function Header({ setItemList, itemList, isAuthenticateUser, profileImageURL, se
             </div>
             <div className="center  flex justify-center w-full flex-[7]">
                 <div className="search_bar w-full flex justify-center px-4  py-[.3rem] relative  flex-col">
-                    {/* <div className="icons absolute left-[1.9rem] z-[2] top-[-.29rem]">
-                        <GrSearch className='text-[1.2rem]'/>
-                    </div> */}
-                    {/* <label htmlFor="search"><GrSearch/></label> */}
                     <input type="search"
                         placeholder='search...'
                         onFocus={() => {
@@ -94,16 +89,25 @@ function Header({ setItemList, itemList, isAuthenticateUser, profileImageURL, se
                 <CartIcons isAuthenticateUser={isAuthenticateUser} isAuth={isAuth.image} />
                 {/* ==================================Profile Icons======================== */}
                 {
-                    (isAuthenticateUser && isAuth.image) ? typeof profileImageURL==="string"&&(<Profile_icons url={profileImageURL} showRightSideBar={showRightSideBar} setShowRightSideBar={setShowRightSideBar} />) :
-                        <div className="wrapper_login bg-[#d6d1d1ce]  rounded-md px-[.4rem] my-[2px] flex justify-center items-center">
+                    (isAuthenticateUser && isAuth.image)
+                        ?
+                        < Profile_icons
+                            isHaveImage= {isAuth.image}
+                            showRightSideBar={showRightSideBar}
+                            setShowRightSideBar={setShowRightSideBar} />
+                        :
+                        (<div className="wrapper_login bg-[#d6d1d1ce]  rounded-md px-[.4rem] my-[2px] flex justify-center items-center">
                             <button
                                 onClick={() => {
                                     setShowLoginModal(true)
                                 }}
                                 className='btn bg-[#e8e3e3] text-black hover:text-[#fff] border-none btn-sm'>login</button>
-                        </div>
+                        </div>)
                 }
 
+
+
+                {/* ===============================================Right Side Navigation================================== */}
                 <AnimatePresence>
                     {showRightSideBar && <motion.div
                         initial={{ x: 300, opacity: 0 }}

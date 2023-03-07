@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios"
 import { useEffect, useMemo, useState } from "react";
 function PageNotFound() {
-    const [file, setFile] = useState<string>("")
+    const [file, setFile] = useState<string | ArrayBuffer | null>(null)
     const [loader, setLoader] = useState<boolean>(false)
     const get404Image = useMemo(() => {
         (
@@ -11,8 +11,11 @@ function PageNotFound() {
                     const res = await axios.get("/api/v1/static/404", {
                         responseType: "blob"
                     })
-                    const url = window.URL.createObjectURL(new Blob([res.data]))
-                    setFile(url)
+                    const reader = new FileReader()
+                    reader.onload = () => {
+                        setFile(reader.result)
+                    }
+                    reader.readAsDataURL(res.data)
                 } catch (err: unknown) {
                     setLoader(false)
                     const error = err as AxiosError
@@ -29,11 +32,13 @@ function PageNotFound() {
     }, [])
     return (
         <div className='w-full h-full relative bg-[#fff]'>
-            <div className={`image w-[90%] h-full mobile:h-[60%] `}>
+            <div className={`image w-[100%] h-full mobile:h-[60%] `}>
                 {
                     loader ?
                         <p className="w-full h-full bg-[#e9e4e4] animate-pulse"></p> :
-                        <img src={file} className="w-full h-full" alt="" />
+                        (typeof file === "string" &&
+                            <img src={file} className="w-full h-full" alt="" />
+                        )
                 }
             </div>
             <p
